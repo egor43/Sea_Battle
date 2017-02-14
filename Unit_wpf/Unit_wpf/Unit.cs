@@ -9,10 +9,9 @@ using System.Windows.Media.Imaging;
 // 
 //  Класс Unit представляет базовую единицу игрового поля - ячейку.
 //  В данном классе реализуется вся логика поведения ячейки.
-//  Основными данными, которыми оперирует данный класс являются координаты.
 //
 //  Перечисление unit_type представляет тип ячейки. Является открытым для  
-//  предоставления возможности программисту при создании объекта класса, где-то там в другом месте,
+//  предоставления возможности программисту при создании объекта класса
 //  не использовать "магические константы", а наглядно видеть тип ячейки
 //
 //
@@ -33,23 +32,19 @@ public class Unit
     
 
     //Константы класса:
-    public const int SIZE_UNIT = 20; //Размер ячейки (SIZE_UNIT x SIZE_UNIT)
+    private const int SIZE_UNIT = 20; //Размер ячейки (SIZE_UNIT x SIZE_UNIT)
 
     //Переменные класса:
-    private int x; //Позиция ячейки по координате Х
-    private int y; //Позиция ячейки по координате У
     private BitmapImage image; //Картинка ячейки
     private unit_type type_unit; //Тип ячейки
 
 
     //Конструкторы:
-    public Unit (int position_x, int position_y, unit_type type_unit)
+    public Unit (unit_type type_unit)
     {
         try
         {
             this.type_unit = type_unit;
-            this.x = position_x;
-            this.y = position_y;
         }
         catch(Exception)
         {
@@ -80,28 +75,6 @@ public class Unit
     }
 
     //Public методы:
-    public void Set_X(int x)
-    {
-        //Установка координаты Х
-    }
-
-    public void Set_Y(int y)
-    {
-        //Установка координаты Y
-    }
-
-    public int Get_X()
-    {
-        //Возврат координаты Х
-        return this.x;
-    }
-
-    public int Get_Y()
-    {
-        //Возврат координаты Y
-        return this.y;
-    }
-
     public void Set_Image(BitmapImage image)
     {
         //Установка картинки прямо по переданной картинке
@@ -135,10 +108,8 @@ public class Unit
         //Получает тип ячейки
     }
 
-    public bool Treatment_Shot(int shot_x, int shot_y)
+    public void Treatment_Shot()
     {
-        //Обработка координат и соответсвующее изменение картинки для ячейки если в нее попали.
-        //Вернуть true - если попали в данную ячейку (независимо от типа ячейки), иначе - false.
-        return false;
+        //Обработка попадания и соответсвующее изменение картинки для ячейки.
     }
 }
