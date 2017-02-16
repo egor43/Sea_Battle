@@ -91,7 +91,7 @@ public class Unit
         return this.image;
     }
 
-    public int Get_Size_Unit()
+    public static int Get_Size_Unit()
     {
         //Возвращает размер ячейки
         return 0;
