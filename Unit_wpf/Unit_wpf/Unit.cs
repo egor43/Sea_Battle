@@ -97,13 +97,13 @@ public class Unit
         return 0;
     }
 
-    public string Get_Unit_Type_Str()
+    public unit_type Get_Unit_Type()
     {
-        //Возвращает тип ячейки в строковом представлении
-        return "";
+        //Возвращает тип ячейки
+        return unit_type.sea;
     }
 
-    public void Set_Unit_Type_Str(int type_unit)
+    public void Set_Unit_Type(unit_type type_unit)
     {
         //Получает тип ячейки
     }
