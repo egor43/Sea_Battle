@@ -77,39 +77,55 @@ public class Unit
     //Public методы:
     public void Set_Image(BitmapImage image)
     {
-        //Установка картинки прямо по переданной картинке
+        this.image = image;
     }
 
     public void Set_Image(Uri image)
     {
-        //Установка картинки по пути (Uri)
+        this.image = new BitmapImage(image);
     }
 
     public BitmapImage Get_Image()
     {
-        //Возврат картинки
         return this.image;
     }
 
     public static int Get_Size_Unit()
     {
-        //Возвращает размер ячейки
         return SIZE_UNIT;
     }
 
     public unit_type Get_Unit_Type()
     {
-        //Возвращает тип ячейки в строковом представлении
         return type_unit;
     }
 
     public void Set_Unit_Type(unit_type type_unit)
     {
-        //Получает тип ячейки
+        this.type_unit = type_unit;
     }
 
     public void Treatment_Shot()
     {
+        switch(type_unit)
+        {
+            case unit_type.sea:
+                {
+
+                    break;
+                }
+            case unit_type.ship:
+                {
+
+                    break;
+                }
+            default:
+            {
+                    throw new InvalidOperationException("Trying to change a modified cell");
+            }
+
+
+        }
         //Обработка попадания и соответсвующее изменение картинки для ячейки.
     }
 }

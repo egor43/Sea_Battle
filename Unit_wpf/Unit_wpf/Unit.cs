@@ -77,17 +77,16 @@ public class Unit
     //Public методы:
     public void Set_Image(BitmapImage image)
     {
-        //Установка картинки прямо по переданной картинке
+        this.image = image;
     }
 
     public void Set_Image(Uri image)
     {
-        //Установка картинки по пути (Uri)
+        this.image = new BitmapImage(new Uri("sea.png", UriKind.Relative));
     }
 
     public BitmapImage Get_Image()
     {
-        //Возврат картинки
         return this.image;
     }
 
