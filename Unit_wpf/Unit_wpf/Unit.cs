@@ -32,7 +32,7 @@ public class Unit
     
 
     //Константы класса:
-    private const int SIZE_UNIT = 20; //Размер ячейки (SIZE_UNIT x SIZE_UNIT)
+    private const int SIZE_UNIT = 30; //Размер ячейки (SIZE_UNIT x SIZE_UNIT)
 
     //Переменные класса:
     private BitmapImage image; //Картинка ячейки
@@ -55,16 +55,16 @@ public class Unit
             switch (type_unit) //В свитче устанавливаем ячейке картинку в зависимости от переданного аргумента type_unit
             {                  
                 case unit_type.sea:
-                    this.image = new BitmapImage(new Uri("sea.png", UriKind.Relative)); //Используем относитьельные пути к картинкам (т.е. они должны рядом с экзешником лежать)
+                    this.image = new BitmapImage(new Uri("sea.jpg", UriKind.Relative)); //Используем относитьельные пути к картинкам (т.е. они должны рядом с экзешником лежать)
                     break;
                 case unit_type.ship:
-                    this.image = new BitmapImage(new Uri("КАРТИНКА С КОРАБЛЕМ", UriKind.Relative)); //Добавить картинку с кораблем
+                    this.image = new BitmapImage(new Uri("ship.png", UriKind.Relative)); //Добавить картинку с кораблем
                     break;
                 case unit_type.hit_sea:
-                    this.image = new BitmapImage(new Uri("КАРТИНКА С ДЫРКОЙ В МОРЕ", UriKind.Relative)); //Добавить картинку с попаданием в море
+                    this.image = new BitmapImage(new Uri("dot.png", UriKind.Relative)); //Добавить картинку с попаданием в море
                     break;
                 case unit_type.hit_ship:
-                    this.image = new BitmapImage(new Uri("КАРТИНКА С ПОВРЕЖДЕНИЕМ КОРАБЛЯ", UriKind.Relative)); //Добавить картинку с попаданием в корабль
+                    this.image = new BitmapImage(new Uri("cross.png", UriKind.Relative)); //Добавить картинку с попаданием в корабль
                     break;
             }
         }
@@ -82,7 +82,7 @@ public class Unit
 
     public void Set_Image(Uri image)
     {
-        this.image = new BitmapImage(new Uri("sea.png", UriKind.Relative));
+        this.image = new BitmapImage(image);
     }
 
     public BitmapImage Get_Image()
@@ -92,23 +92,42 @@ public class Unit
 
     public static int Get_Size_Unit()
     {
-        //Возвращает размер ячейки
-        return 0;
+        return SIZE_UNIT;
     }
 
     public unit_type Get_Unit_Type()
     {
-        //Возвращает тип ячейки
-        return unit_type.sea;
+        return type_unit;
     }
 
     public void Set_Unit_Type(unit_type type_unit)
     {
-        //Получает тип ячейки
+        this.type_unit = type_unit;
     }
 
     public void Treatment_Shot()
     {
+        switch(type_unit)
+        {
+            case unit_type.sea:
+                {
+                    type_unit = unit_type.hit_sea;
+                    this.image = new BitmapImage(new Uri("dot.png", UriKind.Relative));
+                    break;
+                }
+            case unit_type.ship:
+                {
+                    type_unit = unit_type.hit_ship;
+                    this.image = new BitmapImage(new Uri("cross.png", UriKind.Relative));
+                    break;
+                }
+            default:
+            {
+                    throw new InvalidOperationException("Trying to change a modified cell");
+            }
+
+
+        }
         //Обработка попадания и соответсвующее изменение картинки для ячейки.
     }
 }
