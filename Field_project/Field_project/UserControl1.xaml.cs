@@ -38,7 +38,7 @@ namespace Field_project
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                 {
-                    unit_arr[i, j] = new Unit(unit_type.sea);
+                   unit_arr[i, j] = new Unit(unit_type.sea);                   
                     Canvas my_canvas = new Canvas() {Width = size_unit, Height= size_unit };
                     my_canvas.Tag = unit_arr[i, j]; //Запихиваем в Tag канваса объект Unit
                     ImageBrush my_img_brush = new ImageBrush(unit_arr[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
@@ -62,10 +62,11 @@ namespace Field_project
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Unit unit = (Unit)((Canvas)sender).Tag;
-            if (unit.Get_Unit_Type() == unit_type.sea)
+            if ((unit.Get_Unit_Type() == unit_type.sea)  || (unit.Get_Unit_Type() == unit_type.ship))
             {
-                // Меняем фон у ячейки и канваса в котором он лежит           
-                ((Canvas)sender).Background = new SolidColorBrush(Colors.Red); //Это шняга тестовая
+                // Меняем фон у ячейки и канваса в котором он лежит    
+                unit.Treatment_Shot();
+                ((Canvas)sender).Background = new ImageBrush(unit.Get_Image()); //Это шняга тестовая
             }
         }
     }
