@@ -21,6 +21,15 @@ namespace Field_project
     public partial class UserControl1 : UserControl
     {
         private Unit[,] matrix_state;
+
+
+        public enum type_field
+        {
+            set_field =0,
+            user_field =1,
+            enemy_field=2
+        }
+
         //Метод "расчерчивает" грид на пустые ячейки.
         private void Initinitialization_Grid(double size_unit)
         {
