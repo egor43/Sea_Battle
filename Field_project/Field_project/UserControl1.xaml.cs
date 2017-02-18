@@ -47,10 +47,10 @@ namespace Field_project
                 for (int j = 0; j < 10; j++)
                 {
                     matrix_state[i, j] = new Unit(unit_type.sea);
-                    if (i == 2 && j == 1) matrix_state[2, 1] = new Unit(unit_type.ship);
+                    if (i == 1 && j == 2) matrix_state[1, 2] = new Unit(unit_type.ship);
                     if (i == 2 && j == 2) matrix_state[2, 2] = new Unit(unit_type.ship);
-                    if (i == 2 && j == 3) matrix_state[2, 3] = new Unit(unit_type.ship);
-                    if (i == 2 && j == 4) matrix_state[2, 4] = new Unit(unit_type.ship);
+                    if (i == 3 && j == 2) matrix_state[3, 2] = new Unit(unit_type.ship);
+                    if (i == 4 && j == 2) matrix_state[4, 2] = new Unit(unit_type.ship);
                                      
                     Canvas my_canvas = new Canvas() {Width = size_unit, Height= size_unit };
                     my_canvas.Tag = matrix_state[i, j]; //Запихиваем в Tag канваса объект Unit
@@ -129,7 +129,7 @@ namespace Field_project
                         }
                     }
                 //сортируем по X
-                return 1;
+                return 1; //Горизонтально
             }
             else
             {
@@ -151,7 +151,7 @@ namespace Field_project
                             }
                         }
                     //сортируем по Y
-                    return 2;
+                    return 2;//Вертикально
                 }
                 else return 0;//Если не прокатило совсем
             }
@@ -164,23 +164,25 @@ namespace Field_project
 
             if (tmp != 0)
             {
-                if (tmp == 1)//по X
+                if (tmp == 2)//Вертикально
                 {
-                    if ((points[0].Y + count_value_ship - 1) != (points[points.Length - 1].Y)) return false; //Если корабля не имеет разрывов по оси X
-                    for (int i = 0; i < points.Length - 1; i++)
+                    if ((points[0].X + count_value_ship - 1) != (points[points.Length - 1].X)) return false; //Если корабля не имеет разрывов по оси X
+                    for (int i = 0; i < points.Length; i++)
                     {
-                        if (i == 0)// для левого части корабля
+                        double I = points[i].X;
+                        double J = points[i].Y;
+
+                        if (i == 0)// для верхней части корабля
                         {
                             try
                             {
-                                double X = points[i].X;
-                                double Y = points[i].Y;
+                                
 
-                                if (state[(int)X, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X - 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X - 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X - 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X, (int)Y + 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I - 1, (int)J - 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I- 1, (int)J+ 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I, (int)J+1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
                             }
                             catch { }
                         }
@@ -188,60 +190,10 @@ namespace Field_project
                         {
                             try
                             {
-                                double X = points[i].X;
-                                double Y = points[i].Y;
+                              
 
-                                if (state[(int)X, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X, (int)Y + 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
-                            }
-                            catch { }
-                        }
-                        if (i == points.Length - 1)// для последней части корабля
-                        {
-                            try
-                            {
-                                double X = points[i].X;
-                                double Y = points[i].Y;
-
-                                if (state[(int)X, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X, (int)Y + 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
-                            }
-                            catch { }
-                        }
-                    }
-                }
-                else//по Y
-                {
-                    if ((points[0].X + count_value_ship - 1) != (points[points.Length - 1].X)) return false; //Если корабля не имеет разрывов по оси Y
-                    for (int i = 0; i < points.Length - 1; i++)
-                    {
-                        if (i == 0)// для верхней части корабля
-                        {
-                            try
-                            {
-                                double X = points[i].X;
-                                double Y = points[i].Y;
-
-                                if (state[(int)X - 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X - 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
-                            }
-                            catch { }
-                        }
-                        if (i != 0 && i != points.Length - 1)// для средней части корабля
-                        {
-                            try
-                            {
-                                double X = points[i].X;
-                                double Y = points[i].Y;
-
-                                if (state[(int)X + 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X - 1, (int)Y].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I, (int)J-1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I, (int)J+1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
                             }
                             catch { }
                         }
@@ -249,14 +201,62 @@ namespace Field_project
                         {
                             try
                             {
-                                double X = points[i].X;
-                                double Y = points[i].Y;
+                               
 
-                                if (state[(int)X - 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X - 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)X + 1, (int)Y].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I, (int)J-1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I+1, (int)J-1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I+1 , (int)J].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I+1, (int)J + 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I, (int)J+1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                        }
+                    }
+                }
+                else//Горизонтально
+                {
+                    if ((points[0].Y + count_value_ship - 1) != (points[points.Length - 1].Y)) return false; //Если корабля не имеет разрывов по оси Y
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        double I = points[i].X;
+                        double J = points[i].Y;
+
+                        if (i == 0)// для левой части корабля
+                        {
+                            try
+                            {
+                                
+
+                                if (state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I-1, (int)J - 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I + 1, (int)J - 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                        }
+                        if (i != 0 && i != points.Length - 1)// для средней части корабля
+                        {
+                            try
+                            {
+                               
+
+                                if (state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I+1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                        }
+                        if (i == points.Length - 1)// для правой части корабля
+                        {
+                            try
+                            {
+                               
+
+                                if (state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I-1, (int)J + 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I + 1, (int)J + 1].Get_Unit_Type() != unit_type.sea
+                                    || state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
                             }
                             catch { }
                         }
