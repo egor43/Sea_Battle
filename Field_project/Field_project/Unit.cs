@@ -55,16 +55,16 @@ public class Unit
             switch (type_unit) //В свитче устанавливаем ячейке картинку в зависимости от переданного аргумента type_unit
             {                  
                 case unit_type.sea:
-                    this.image = new BitmapImage(new Uri("sea.png", UriKind.Relative)); //Используем относитьельные пути к картинкам (т.е. они должны рядом с экзешником лежать)
+                    this.image = new BitmapImage(new Uri("sea.jpg", UriKind.Relative)); //Используем относитьельные пути к картинкам (т.е. они должны рядом с экзешником лежать)
                     break;
                 case unit_type.ship:
-                    this.image = new BitmapImage(new Uri("КАРТИНКА С КОРАБЛЕМ", UriKind.Relative)); //Добавить картинку с кораблем
+                    this.image = new BitmapImage(new Uri("ship.png", UriKind.Relative)); //Добавить картинку с кораблем
                     break;
                 case unit_type.hit_sea:
-                    this.image = new BitmapImage(new Uri("КАРТИНКА С ДЫРКОЙ В МОРЕ", UriKind.Relative)); //Добавить картинку с попаданием в море
+                    this.image = new BitmapImage(new Uri("dot.png", UriKind.Relative)); //Добавить картинку с попаданием в море
                     break;
                 case unit_type.hit_ship:
-                    this.image = new BitmapImage(new Uri("КАРТИНКА С ПОВРЕЖДЕНИЕМ КОРАБЛЯ", UriKind.Relative)); //Добавить картинку с попаданием в корабль
+                    this.image = new BitmapImage(new Uri("cross.png", UriKind.Relative)); //Добавить картинку с попаданием в корабль
                     break;
             }
         }
@@ -111,12 +111,14 @@ public class Unit
         {
             case unit_type.sea:
                 {
-
+                    type_unit = unit_type.hit_sea;
+                    this.image = new BitmapImage(new Uri("dot.png", UriKind.Relative));
                     break;
                 }
             case unit_type.ship:
                 {
-
+                    type_unit = unit_type.hit_ship;
+                    this.image = new BitmapImage(new Uri("cross.png", UriKind.Relative));
                     break;
                 }
             default:
