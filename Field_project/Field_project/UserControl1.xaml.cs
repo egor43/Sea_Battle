@@ -268,6 +268,24 @@ namespace Field_project
             return true;
         }
 
+        private bool Check_Ship_One(Point[] points, Unit[,] state)
+        {
+            try
+            {
+                double X = points[0].X;
+                double Y = points[0].Y;
 
+                if (state[(int)X, (int)Y - 1].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X - 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X - 1, (int)Y].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X - 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X, (int)Y + 1].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X + 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X + 1, (int)Y].Get_Unit_Type() != unit_type.sea
+                    || state[(int)X + 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+            }
+            catch { }
+            return true;
+        }
     }
 }
