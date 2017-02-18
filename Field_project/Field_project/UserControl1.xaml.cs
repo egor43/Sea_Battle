@@ -43,14 +43,13 @@ namespace Field_project
         //Метод заполняет, "расчерченные" методом Initinitialization_Grid, пустые ячейки элементами Canvas, которые содержат внутри себя объекты класса Unit
         private void Initinitialization_Field(double size_unit, MouseButtonEventHandler handler)
         {
-            Unit[,] unit_arr = new Unit[10, 10];
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                 {
-                   unit_arr[i, j] = new Unit(unit_type.sea);                   
+                    matrix_state[i, j] = new Unit(unit_type.sea);                   
                     Canvas my_canvas = new Canvas() {Width = size_unit, Height= size_unit };
-                    my_canvas.Tag = unit_arr[i, j]; //Запихиваем в Tag канваса объект Unit
-                    ImageBrush my_img_brush = new ImageBrush(unit_arr[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
+                    my_canvas.Tag = matrix_state[i, j]; //Запихиваем в Tag канваса объект Unit
+                    ImageBrush my_img_brush = new ImageBrush(matrix_state[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
                     my_canvas.Background = my_img_brush;
                     my_canvas.MouseLeftButtonUp += handler;
                     grid.Children.Add(my_canvas);
@@ -61,13 +60,13 @@ namespace Field_project
 
         private void Initinitialization_Field(double size_unit, MouseButtonEventHandler handler, Unit[,] unit_arr)
         {
+            matrix_state = unit_arr;
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                 {
-                    unit_arr[i, j] = new Unit(unit_type.sea);
                     Canvas my_canvas = new Canvas() { Width = size_unit, Height = size_unit };
-                    my_canvas.Tag = unit_arr[i, j]; //Запихиваем в Tag канваса объект Unit
-                    ImageBrush my_img_brush = new ImageBrush(unit_arr[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
+                    my_canvas.Tag = matrix_state[i, j]; //Запихиваем в Tag канваса объект Unit
+                    ImageBrush my_img_brush = new ImageBrush(matrix_state[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
                     my_canvas.Background = my_img_brush;
                     my_canvas.MouseLeftButtonUp += handler;
                     grid.Children.Add(my_canvas);
