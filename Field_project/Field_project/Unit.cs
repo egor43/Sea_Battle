@@ -40,6 +40,7 @@ public class Unit
 
 
     //Конструкторы:
+
     public Unit (unit_type type_unit)
     {
         try

@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Field_project", "Field_project\Field_project.csproj", "{445BAEC5-7A08-4256-B547-5FE8A58BD3D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication2", "WpfApplication2\WpfApplication2.csproj", "{EEE6EFEA-72AF-435E-BF14-A9926EED6353}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{445BAEC5-7A08-4256-B547-5FE8A58BD3D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{445BAEC5-7A08-4256-B547-5FE8A58BD3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{445BAEC5-7A08-4256-B547-5FE8A58BD3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{445BAEC5-7A08-4256-B547-5FE8A58BD3D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE6EFEA-72AF-435E-BF14-A9926EED6353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE6EFEA-72AF-435E-BF14-A9926EED6353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE6EFEA-72AF-435E-BF14-A9926EED6353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE6EFEA-72AF-435E-BF14-A9926EED6353}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -91,7 +91,7 @@ namespace Field_project
             window.Width = Unit.Get_Size_Unit() * 10;
             window.Height = Unit.Get_Size_Unit() * 10;
             Initinitialization_Grid(Unit.Get_Size_Unit());
-           // Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
         }
 
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -99,8 +99,7 @@ namespace Field_project
             Unit unit = (Unit)((Canvas)sender).Tag;
             if ((unit.Get_Unit_Type() == unit_type.sea)  || (unit.Get_Unit_Type() == unit_type.ship))
             {
-                Point[] point = new Point[] { new Point(2, 1), new Point(2, 2), new Point(2, 3), new Point(2, 4) };
-                //Меняем фон у ячейки и канваса в котором он лежит
+                Point[] point = new Point[] { new Point(1, 2), new Point(2, 2), new Point(3, 2), new Point(4, 2) };
                 bool flag = Check_Ship(point, matrix_state, 4);
                 unit.Treatment_Shot();
                 ((Canvas)sender).Background = new ImageBrush(unit.Get_Image()); //Это шняга тестовая
@@ -117,10 +116,10 @@ namespace Field_project
                 if (points[i].X == points[i + 1].X) checktmp++;
             }
 
-            if (checktmp == points.Length)//Если прокатило с Х
+            if (checktmp == points.Length-1)//Если прокатило с Х
             {
                 for (int j = 0; j < points.Length - 1; j++)
-                    for (int i = 0; i < points.Length - j; i++)
+                    for (int i = 0; i < points.Length -1- j; i++)
                     {
                         if (points[i].Y > points[i + 1].Y)
                         {
@@ -139,10 +138,10 @@ namespace Field_project
                 {
                     if (points[i].Y == points[i + 1].Y) checktmp++;
                 }
-                if (checktmp == points.Length)//Если прокатило с Y
+                if (checktmp == points.Length-1)//Если прокатило с Y
                 {
                     for (int j = 0; j < points.Length - 1; j++)
-                        for (int i = 0; i < points.Length - j; i++)
+                        for (int i = 0; i < points.Length -1- j; i++)
                         {
                             if (points[i].X > points[i + 1].X)
                             {
@@ -167,7 +166,7 @@ namespace Field_project
             {
                 if (tmp == 1)//по X
                 {
-                    if ((points[0].X + count_value_ship - 1) != (points[points.Length - 1].X)) return false; //Если корабля не имеет разрывов по оси X
+                    if ((points[0].Y + count_value_ship - 1) != (points[points.Length - 1].Y)) return false; //Если корабля не имеет разрывов по оси X
                     for (int i = 0; i < points.Length - 1; i++)
                     {
                         if (i == 0)// для левого части корабля
@@ -216,7 +215,7 @@ namespace Field_project
                 }
                 else//по Y
                 {
-                    if ((points[0].Y + count_value_ship - 1) != (points[points.Length - 1].Y)) return false; //Если корабля не имеет разрывов по оси Y
+                    if ((points[0].X + count_value_ship - 1) != (points[points.Length - 1].X)) return false; //Если корабля не имеет разрывов по оси Y
                     for (int i = 0; i < points.Length - 1; i++)
                     {
                         if (i == 0)// для верхней части корабля
@@ -267,27 +266,6 @@ namespace Field_project
             else return false;
 
             return true;
-        }
-
-        private bool Check_Ship_One(Point[] points, Unit[,] state)//проверка для однопалубного корабля
-        {
-            try
-            {
-                double X = points[0].X;
-                double Y = points[0].Y;
-
-                if (state[(int)X, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X - 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X - 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X - 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X + 1, (int)Y + 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X + 1, (int)Y].Get_Unit_Type() != unit_type.sea
-                    || state[(int)X + 1, (int)Y - 1].Get_Unit_Type() != unit_type.sea) return false; 
-            }
-            catch { }
-            return true;
-
         }
 
 
