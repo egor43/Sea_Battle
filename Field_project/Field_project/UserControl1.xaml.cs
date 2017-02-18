@@ -20,9 +20,13 @@ namespace Field_project
     /// </summary>
     public partial class UserControl1 : UserControl
     {
+        //Переменные класса пользовательского элемента Field ("игровое поле")
         private Unit[,] matrix_state = new Unit [10,10];
+        public type_field field_type = type_field.set_field;
+        private Ships ships = new Ships();
+        List<Point> ship_points = new List<Point>();
 
-
+        //Перечисление типов поля set_field - поле установки кораблей, user_field - поле игрока, enemy_field - поле врага
         public enum type_field
         {
             set_field =0,
@@ -47,11 +51,6 @@ namespace Field_project
                 for (int j = 0; j < 10; j++)
                 {
                     matrix_state[i, j] = new Unit(unit_type.sea);
-                    if (i == 1 && j == 2) matrix_state[1, 2] = new Unit(unit_type.ship);
-                    if (i == 2 && j == 2) matrix_state[2, 2] = new Unit(unit_type.ship);
-                    if (i == 3 && j == 2) matrix_state[3, 2] = new Unit(unit_type.ship);
-                    if (i == 4 && j == 2) matrix_state[4, 2] = new Unit(unit_type.ship);
-                                     
                     Canvas my_canvas = new Canvas() {Width = size_unit, Height= size_unit };
                     my_canvas.Tag = matrix_state[i, j]; //Запихиваем в Tag канваса объект Unit
                     ImageBrush my_img_brush = new ImageBrush(matrix_state[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
@@ -63,6 +62,7 @@ namespace Field_project
                 }
         }
 
+        //Метод заполняет, "расчерченные" методом Initinitialization_Grid, пустые ячейки элементами Canvas, которые содержат внутри себя объекты класса Unit из входящей матрицы unit_arr
         private void Initinitialization_Field(double size_unit, MouseButtonEventHandler handler, Unit[,] unit_arr)
         {
             matrix_state = unit_arr;
@@ -80,6 +80,7 @@ namespace Field_project
                 }
         }
 
+        //Возвращает матрицу состояния
         private Unit[,] GetMatrixState()
         {
             return matrix_state;
@@ -97,6 +98,24 @@ namespace Field_project
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Unit unit = (Unit)((Canvas)sender).Tag;
+            switch (field_type)
+            {
+                case type_field.set_field:
+                    //Если тип поля "установка кораблей"
+                    if(ships.Next_Stage()==0)
+                    {
+                        //Надо в класс Unit добавить поля и методы доступа к ним, которые будут содержать в себе информацию о том, в какой ячейке массива они расположены (поле: i, поле: j)
+                    }
+                    break;
+
+                case type_field.enemy_field:
+                    //Если тип поля "поле врага"
+                    break;
+
+                case type_field.user_field:
+                    //Если тип поля "поле игрока"
+                    break;
+            }
             if ((unit.Get_Unit_Type() == unit_type.sea)  || (unit.Get_Unit_Type() == unit_type.ship))
             {
                 Point[] point = new Point[] { new Point(1, 2), new Point(2, 2), new Point(3, 2), new Point(4, 2) };
