@@ -8,9 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Field_project:UserControl1 HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" AllowDrop="True"/>
-
-
+        <Field_project:UserControl1/>
 
     </Grid>
 </Window>
