@@ -23,12 +23,12 @@ namespace Field_project
         private Unit[,] matrix_state;
 
 
-        //public enum type_field
-        //{
-        //    set_field =0,
-        //    user_field =1,
-        //    enemy_field=2
-        //}
+        public enum type_field
+        {
+            set_field =0,
+            user_field =1,
+            enemy_field=2
+        }
 
         //Метод "расчерчивает" грид на пустые ячейки.
         private void Initinitialization_Grid(double size_unit)
@@ -91,7 +91,7 @@ namespace Field_project
             window.Width = Unit.Get_Size_Unit() * 10;
             window.Height = Unit.Get_Size_Unit() * 10;
             Initinitialization_Grid(Unit.Get_Size_Unit());
-            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
+           // Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
         }
 
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
