@@ -20,6 +20,8 @@ namespace Field_project
     /// </summary>
     public partial class UserControl1 : UserControl
     {
+        private Unit[,] matrix_state;
+
 
         public enum type_field
         {
@@ -27,7 +29,6 @@ namespace Field_project
             user_field =1,
             enemy_field=2
         }
-
 
         //Метод "расчерчивает" грид на пустые ячейки.
         private void Initinitialization_Grid(double size_unit)
@@ -58,6 +59,28 @@ namespace Field_project
                 }
         }
 
+        private void Initinitialization_Field(double size_unit, MouseButtonEventHandler handler, Unit[,] unit_arr)
+        {
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++)
+                {
+                    unit_arr[i, j] = new Unit(unit_type.sea);
+                    Canvas my_canvas = new Canvas() { Width = size_unit, Height = size_unit };
+                    my_canvas.Tag = unit_arr[i, j]; //Запихиваем в Tag канваса объект Unit
+                    ImageBrush my_img_brush = new ImageBrush(unit_arr[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
+                    my_canvas.Background = my_img_brush;
+                    my_canvas.MouseLeftButtonUp += handler;
+                    grid.Children.Add(my_canvas);
+                    Grid.SetColumn(my_canvas, j); //Установка канваса в нужную ячейку "расчерченной" матрицы.
+                    Grid.SetRow(my_canvas, i);    //
+                }
+        }
+
+        private Unit [,] GetMatrixState()
+        {
+            return matrix_state;
+        }
+
         public UserControl1()
         {
             InitializeComponent();
@@ -77,5 +100,7 @@ namespace Field_project
                 ((Canvas)sender).Background = new ImageBrush(unit.Get_Image()); //Это шняга тестовая
             }
         }
+
+
     }
 }
