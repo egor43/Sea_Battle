@@ -4,6 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//  Проект "Морской бой" в рамках предмета "Технология программирования" 
+//  Мышко Е.В.  
+//  Шамхалов Р.М. 
+//  2017г. 
+// 
+//  Класс Ships представляет методы для работы с игровым полем
+//  в случае установки кораблей.
+//
+//
+
 namespace Field_project
 {
     class Ships
