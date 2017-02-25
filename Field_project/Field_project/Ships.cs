@@ -40,7 +40,7 @@ namespace Field_project
         //Начинает отсчет с самого большого 4-х клеточного корабля.
         //Возвращает: (-1) - если больше нет кораблей, доступных для установки;
         //            (0) - если корабль, доступный для установки, установлен не до конца;
-        //            (1) - если корабль, доступный для установки, установлен до конца;
+        //            (N - тип корабля) - если корабль, доступный для установки, установлен до конца;
         public int Next_Stage()
         {
             if (count_ship_4 > 0)
@@ -50,7 +50,7 @@ namespace Field_project
                 {
                     count_ship_4--;
                     elements_ship_4 = 4;
-                    return 1;
+                    return 4;
                 }
                 return 0;
             }
@@ -61,7 +61,7 @@ namespace Field_project
                 {
                     count_ship_3--;
                     elements_ship_3 = 3;
-                    return 1;
+                    return 3;
                 }
                 return 0;
             }
@@ -72,7 +72,7 @@ namespace Field_project
                 {
                     count_ship_2--;
                     elements_ship_2 = 2;
-                    return 1;
+                    return 2;
                 }
                 return 0;
             }
