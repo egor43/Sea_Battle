@@ -19,6 +19,7 @@ namespace Field_project
     class Ships
     {
         //Переменные класса:
+
         private int count_ship_4 = 1;
         private int count_ship_3 = 2;
         private int count_ship_2 = 3;
@@ -30,6 +31,7 @@ namespace Field_project
         private int elements_ship_1 = 1;
 
         //Конструкторы:
+
         public Ships() { }
 
         //Public методы:
@@ -136,6 +138,5 @@ namespace Field_project
             }
         }
 
-    //Private методы:
-}
+    }
 }
