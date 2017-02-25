@@ -51,7 +51,7 @@ namespace Field_project
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                 {
-                    matrix_state[i, j] = new Unit(unit_type.sea);
+                    matrix_state[i, j] = new Unit(unit_type.sea,i,j);
                     Canvas my_canvas = new Canvas() {Width = size_unit, Height= size_unit };
                     my_canvas.Tag = matrix_state[i, j]; //Запихиваем в Tag канваса объект Unit
                     ImageBrush my_img_brush = new ImageBrush(matrix_state[i, j].Get_Image()); //Подгатавливаем изображением ячейки для использования в качестве фона для канваса
@@ -102,8 +102,9 @@ namespace Field_project
             switch (field_type)
             {
                 case type_field.set_field:
+                    int type_ship = ships.Next_Stage();
                     //Если тип поля "установка кораблей."
-                    if(ships.Next_Stage()>0)
+                    if (type_ship>0)
                     {
                         //Надо в класс Unit добавить поля и методы доступа к ним, которые будут содержать в себе информацию о том, в какой ячейке массива они расположены (поле: i, поле: j)
                     }
