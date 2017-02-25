@@ -28,15 +28,16 @@ public enum unit_type //Определяет тип ячейки (море, ко
 public class Unit
 {
 
-    //Перечисления класса:
-    
-
     //Константы класса:
+
     private const int SIZE_UNIT = 30; //Размер ячейки (SIZE_UNIT x SIZE_UNIT)
 
     //Переменные класса:
+
     private BitmapImage image; //Картинка ячейки
     private unit_type type_unit; //Тип ячейки
+    private int position_i; //Позиция ячейки в строке матрице 
+    private int position_j; //Позиция ячейки в стольбце матрице 
 
 
     //Конструкторы:
@@ -76,36 +77,56 @@ public class Unit
     }
 
     //Public методы:
+
+    //получение позиции ячейки в строке матрицы
+    public int Get_Position_I()
+    {
+        return position_i;
+    }
+
+    //Получение позиции ячейки в столбце матрицы
+    public int Get_Position_J()
+    {
+        return position_j;
+    }
+
+    //Установка изображения ячейки по готовой картинке (BitmapImage)
     public void Set_Image(BitmapImage image)
     {
         this.image = image;
     }
 
+    //Установка изображения ячейки по адресу (Uri)
     public void Set_Image(Uri image)
     {
         this.image = new BitmapImage(image);
     }
 
+    //Получение изображения ячейки
     public BitmapImage Get_Image()
     {
         return this.image;
     }
 
+    //Статическое получение размера ячейки
     public static int Get_Size_Unit()
     {
         return SIZE_UNIT;
     }
 
+    //Получение типа ячейки
     public unit_type Get_Unit_Type()
     {
         return type_unit;
     }
 
+    //Установка типа ячейки
     public void Set_Unit_Type(unit_type type_unit)
     {
         this.type_unit = type_unit;
     }
 
+    //Jбработка попадания в ячейку
     public void Treatment_Shot()
     {
         switch(type_unit)
