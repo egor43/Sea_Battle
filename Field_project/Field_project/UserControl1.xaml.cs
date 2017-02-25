@@ -183,7 +183,7 @@ namespace Field_project
         private bool Check_Ship(Point[] points, Unit[,] state, byte count_value_ship)
         {
             if (points.Length != count_value_ship) return false;
-            if (count_value_ship == 1) Check_Ship_One(points, state);
+            if (count_value_ship == 1) return(Check_Ship_One(points, state));
             byte tmp = Sort_Points(points);
 
             if (tmp != 0)
