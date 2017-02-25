@@ -125,7 +125,21 @@ public class Unit
     //Установка типа ячейки
     public void Set_Unit_Type(unit_type type_unit)
     {
-        this.type_unit = type_unit;
+        switch (type_unit)
+        {
+            case unit_type.hit_sea:
+                Set_Image(new Uri("dot.png", UriKind.Relative));
+                break;
+            case unit_type.hit_ship:
+                Set_Image(new Uri("cross.png", UriKind.Relative));
+                break;
+            case unit_type.sea:
+                Set_Image(new Uri("sea.jpg", UriKind.Relative));
+                break;
+            case unit_type.ship:
+                Set_Image(new Uri("ship.png", UriKind.Relative));
+                break;
+        }
     }
 
     //Jбработка попадания в ячейку
