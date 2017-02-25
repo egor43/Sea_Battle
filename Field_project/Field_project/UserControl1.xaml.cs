@@ -26,6 +26,7 @@ namespace Field_project
         public type_field field_type = type_field.set_field; //Тип игрового поля
         private Ships ships = new Ships(); //Объект обеспечивающий работу с методами по подсчету кораблей
         List<Point> ship_points = new List<Point>(); //Список, хранящий ячейки кораблей для их дальнейшей обработки
+        private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
 
         //Перечисление типов поля set_field - поле установки кораблей, user_field - поле игрока, enemy_field - поле врага
         public enum type_field
@@ -101,29 +102,30 @@ namespace Field_project
             Unit unit = (Unit)((Canvas)sender).Tag;
             switch (field_type)
             {
-                case type_field.set_field:
-                    int type_ship = ships.Next_Stage();
-                    //Если тип поля "установка кораблей."
-                    if (type_ship>0)
+                case type_field.set_field: //Если тип поля "установка кораблей."
+                    ship_points.Add(new Point(unit.Get_Position_I(), unit.Get_Position_J())); //Добавляем нажатую ячейку в список кораблей для дальнейшей проверки
+//Тут можно захуярить проверку типа если ячейка "море" - идем далее, если нет - пшол НАХУЙ
+                    unit.Set_Unit_Type(unit_type.ship);
+                    ((Canvas)sender).Background = new ImageBrush(unit.Get_Image());
+                    int type_ship = ships.Next_Stage(); //Получаем состояние кораблей
+                    if (type_ship>0) //Если корабль заполнен
                     {
-                        //Надо в класс Unit добавить поля и методы доступа к ним, которые будут содержать в себе информацию о том, в какой ячейке массива они расположены (поле: i, поле: j)
+                        if (Check_Ship(ship_points.ToArray(), matrix_state, (byte)type_ship))
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
                     }
                     break;
 
-                case type_field.enemy_field:
-                    //Если тип поля "поле врага"
+                case type_field.enemy_field: //Если тип поля "поле врага"
                     break;
 
-                case type_field.user_field:
-                    //Если тип поля "поле игрока"
+                case type_field.user_field: //Если тип поля "поле игрока"
                     break;
-            }
-            if ((unit.Get_Unit_Type() == unit_type.sea)  || (unit.Get_Unit_Type() == unit_type.ship))
-            {
-                Point[] point = new Point[] { new Point(1, 2), new Point(2, 2), new Point(3, 2), new Point(4, 2) };
-                bool flag = Check_Ship(point, matrix_state, 4);
-                unit.Treatment_Shot();
-                ((Canvas)sender).Background = new ImageBrush(unit.Get_Image()); //Это шняга тестовая
             }
         }
 
