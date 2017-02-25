@@ -42,11 +42,13 @@ public class Unit
 
     //Конструкторы:
 
-    public Unit (unit_type type_unit)
+    public Unit (unit_type type_unit, int position_i, int position_j)
     {
         try
         {
             this.type_unit = type_unit;
+            this.position_i = position_i;
+            this.position_j = position_j;
         }
         catch(Exception)
         {
