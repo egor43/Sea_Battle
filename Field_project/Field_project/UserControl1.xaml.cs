@@ -21,9 +21,10 @@ namespace Field_project
     public partial class UserControl1 : UserControl
     {
         //Переменные класса пользовательского элемента Field ("игровое поле")
-        private Unit[,] matrix_state = new Unit [10,10];
-        public type_field field_type = type_field.set_field;
-        private Ships ships = new Ships();
+
+        private Unit[,] matrix_state = new Unit [10,10]; //Матрица состояния игрового поля
+        public type_field field_type = type_field.set_field; //Тип игрового поля
+        private Ships ships = new Ships(); //Объект обеспечивающий работу с методами по подсчету кораблей
         List<Point> ship_points = new List<Point>();
 
         //Перечисление типов поля set_field - поле установки кораблей, user_field - поле игрока, enemy_field - поле врага
