@@ -25,7 +25,7 @@ namespace Field_project
         private Unit[,] matrix_state = new Unit [10,10]; //Матрица состояния игрового поля
         public type_field field_type = type_field.set_field; //Тип игрового поля
         private Ships ships = new Ships(); //Объект обеспечивающий работу с методами по подсчету кораблей
-        List<Point> ship_points = new List<Point>();
+        List<Point> ship_points = new List<Point>(); //Список, хранящий ячейки кораблей для их дальнейшей обработки
 
         //Перечисление типов поля set_field - поле установки кораблей, user_field - поле игрока, enemy_field - поле врага
         public enum type_field
