@@ -140,6 +140,7 @@ public class Unit
                 Set_Image(new Uri("ship.png", UriKind.Relative));
                 break;
         }
+        this.type_unit = type_unit;
     }
 
     //Jбработка попадания в ячейку
