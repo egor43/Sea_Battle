@@ -52,6 +52,7 @@ namespace Field_project
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                 {
+                    saved_state[i,j]= new Unit(unit_type.sea, i, j);
                     matrix_state[i, j] = new Unit(unit_type.sea,i,j);
                     Canvas my_canvas = new Canvas() {Width = size_unit, Height= size_unit };
                     my_canvas.Tag = matrix_state[i, j]; //Запихиваем в Tag канваса объект Unit
@@ -91,33 +92,42 @@ namespace Field_project
         public UserControl1()
         {
             InitializeComponent();
-            window.Width = Unit.Get_Size_Unit() * 10;
-            window.Height = Unit.Get_Size_Unit() * 10;
-            Initinitialization_Grid(Unit.Get_Size_Unit());
-            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
+            window.Width = Unit.Get_Size_Unit() * 10; //Устанавливаем размер поля шириной равной 10 ячейкам
+            window.Height = Unit.Get_Size_Unit() * 10; //Устанавливаем размер поля высотой равной 10 ячейкам
+            Initinitialization_Grid(Unit.Get_Size_Unit()); //Проводим ""расчерчивание поля
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp); //Проводим инициализацию поля
         }
 
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Unit unit = (Unit)((Canvas)sender).Tag;
+            Unit unit = (Unit)((Canvas)sender).Tag; //Вытаскиваем ячейку из вызвавшего элемента
             switch (field_type)
             {
                 case type_field.set_field: //Если тип поля "установка кораблей."
                     ship_points.Add(new Point(unit.Get_Position_I(), unit.Get_Position_J())); //Добавляем нажатую ячейку в список кораблей для дальнейшей проверки
-//Тут можно захуярить проверку типа если ячейка "море" - идем далее, если нет - пшол НАХУЙ
-                    unit.Set_Unit_Type(unit_type.ship);
-                    ((Canvas)sender).Background = new ImageBrush(unit.Get_Image());
+                    if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
+                    unit.Set_Unit_Type(unit_type.ship); //Устанавливаем тип ячейки - "корабль"
+                    ((Canvas)sender).Background = new ImageBrush(unit.Get_Image()); //Устанавливаем соответствующую картинку в ячейку
                     int type_ship = ships.Next_Stage(); //Получаем состояние кораблей
                     if (type_ship>0) //Если корабль заполнен
                     {
-                        if (Check_Ship(ship_points.ToArray(), matrix_state, (byte)type_ship))
+                        if (Check_Ship(ship_points.ToArray(), matrix_state, (byte)type_ship)) //Проверка корректности установки ячеек
                         {
-
+                            Save_Matrix(matrix_state); //Сохраняем состояние поля
                         }
-                        else
+                        else //Если выставленные ячейки не корректны
                         {
-
+                            ships.Back_Stage(); //Откатываем счетчик установки кораблей назад
+                            Load_Matrix(); //Загружаем предидущее состояние
+                            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
                         }
+                        ship_points.Clear(); //Очищаем набор точек (временный набор точек, который заполняется при установке ячеек корабля)
+                    }
+                    else if (type_ship==-1) //Если установка закончена (нет больше доступных кораблей для установки)
+                    {
+                        Load_Matrix(); //Загружаем матрицу состояния
+                        ship_points.Clear(); //Очищаем набор точек
+                        Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
                     }
                     break;
 
@@ -129,6 +139,7 @@ namespace Field_project
             }
         }
 
+        //Метод сортировки массива точек
         private byte Sort_Points(Point[] points)
         {
             byte checktmp = 0; //переменная для определения ориентации корабля
@@ -180,6 +191,7 @@ namespace Field_project
             }
         }
 
+        //Проверка корректности расположения корабля
         private bool Check_Ship(Point[] points, Unit[,] state, byte count_value_ship)
         {
             if (points.Length != count_value_ship) return false;
@@ -292,6 +304,7 @@ namespace Field_project
             return true;
         }
 
+        //Проверка корректности установки однопалубного корабля
         private bool Check_Ship_One(Point[] points, Unit[,] state)
         {
             try
@@ -311,6 +324,30 @@ namespace Field_project
             }
             catch { }
             return true;
+        }
+
+        //Сохранение матрицы состояния
+        private void Save_Matrix(Unit[,] matrix_state)
+        {
+            for(int i=0; i<matrix_state.GetLength(0);i++)
+            {
+                for(int j=0; j<matrix_state.GetLength(1);j++)
+                {
+                    saved_state[i,j] = new Unit(matrix_state[i, j].Get_Unit_Type(), matrix_state[i, j].Get_Position_I(), matrix_state[i, j].Get_Position_J());
+                }
+            }
+        }
+
+        //Загрузка матрицы состояния
+        private void Load_Matrix()
+        {
+            for (int i = 0; i < saved_state.GetLength(0); i++)
+            {
+                for (int j = 0; j < saved_state.GetLength(1); j++)
+                {
+                    matrix_state[i, j] = new Unit(saved_state[i, j].Get_Unit_Type(), saved_state[i, j].Get_Position_I(), saved_state[i, j].Get_Position_J());
+                }
+            }
         }
     }
 }
