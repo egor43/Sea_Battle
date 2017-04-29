@@ -48,10 +48,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utilits.cs" />
     <Page Include="UserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AutoAction.cs" />
     <Compile Include="Ships.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UserControl1.xaml.cs">
