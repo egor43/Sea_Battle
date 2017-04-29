@@ -98,6 +98,7 @@ namespace Field_project
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp); //Проводим инициализацию поля
         }
 
+        // Обрабатывает нажатия на ячейку в зависимости от режима поля (режимы: установка кораблей, поле врага, поле игрока)
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Unit unit = (Unit)((Canvas)sender).Tag; //Вытаскиваем ячейку из вызвавшего элемента
@@ -212,13 +213,27 @@ namespace Field_project
                         {
                             try
                             {
-                                
-
-                                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I - 1, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I- 1, (int)J+ 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I, (int)J+1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I - 1, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I - 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I - 1, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
                             }
                             catch { }
                         }
@@ -226,10 +241,12 @@ namespace Field_project
                         {
                             try
                             {
-                              
-
-                                if (state[(int)I, (int)J-1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I, (int)J+1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
                             }
                             catch { }
                         }
@@ -237,13 +254,27 @@ namespace Field_project
                         {
                             try
                             {
-                               
-
-                                if (state[(int)I, (int)J-1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I+1, (int)J-1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I+1 , (int)J].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I+1, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I, (int)J+1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
                             }
                             catch { }
                         }
@@ -260,14 +291,28 @@ namespace Field_project
                         if (i == 0)// для левой части корабля
                         {
                             try
+                            {                               
+                                if (state[(int)I - 1, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                            try
                             {
-                                
-
-                                if (state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I-1, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I + 1, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I + 1, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I - 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
                             }
                             catch { }
                         }
@@ -275,10 +320,12 @@ namespace Field_project
                         {
                             try
                             {
-                               
-
-                                if (state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I+1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I - 1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
                             }
                             catch { }
                         }
@@ -286,13 +333,27 @@ namespace Field_project
                         {
                             try
                             {
-                               
-
-                                if (state[(int)I-1, (int)J].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I-1, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I + 1, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                                    || state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                                if (state[(int)I - 1, (int)J].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I - 1, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+                            }
+                            catch { }
+                            try
+                            {
+                                if (state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
                             }
                             catch { }
                         }
@@ -307,22 +368,55 @@ namespace Field_project
         //Проверка корректности установки однопалубного корабля
         private bool Check_Ship_One(Point[] points, Unit[,] state)
         {
+            double I = points[0].X;
+            double J = points[0].Y;
+
             try
             {
-                double I = points[0].X;
-                double J = points[0].Y;
-
-                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I - 1, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I - 1, (int)J].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I - 1, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I + 1, (int)J - 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I + 1, (int)J + 1].Get_Unit_Type() != unit_type.sea
-                    || state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false; //Если соседние ячейки не пустые
+                if (state[(int)I, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
             }
             catch { }
+            try
+            {
+                if (state[(int)I - 1, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I - 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I - 1, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I + 1, (int)J - 1].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I + 1, (int)J].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I + 1, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+            try
+            {
+                if (state[(int)I, (int)J + 1].Get_Unit_Type() != unit_type.sea) return false;
+            }
+            catch { }
+
             return true;
         }
 

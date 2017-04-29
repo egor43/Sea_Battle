@@ -6,8 +6,5 @@
              xmlns:local="clr-namespace:Field_project"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Name="window" Background="#FF00C5FF">
-    <Grid Name="grid">
-       
-
-    </Grid>
+    <Grid Name="grid"/>
 </UserControl>
