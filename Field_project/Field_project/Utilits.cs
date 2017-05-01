@@ -239,7 +239,7 @@ namespace Field_project
         }
 
         // Cортирует массив входящих точек для дальнейшей обработки в методе проверки расположения точек
-        private static byte Sort_Points(Point[] points)
+        public static byte Sort_Points(Point[] points)
         {
             byte checktmp = 0; //переменная для определения ориентации корабля
             Point tmp = new Point();
@@ -287,6 +287,83 @@ namespace Field_project
                     return 2;//Вертикально
                 }
                 else return 0;//Если не прокатило совсем
+            }
+        }
+
+        // Выдает рандомную точку на матрице в диапазоне от 0 до max_сoordinate
+        public static Point GetRandomPoint(int max_coordinate=10)
+        {
+            Point result = new Point(-1, -1);
+            Random random_x = new Random();
+            result.X = random_x.Next(max_coordinate);
+            System.Threading.Thread.Sleep(50);
+            Random random_y = new Random();
+            result.Y = random_y.Next(max_coordinate);
+            return result;
+        }
+
+        // Приводит точку point_change к соседней с good_point
+        public static Point NormalizedPoint(Point[] good_point, Point point_change)
+        {
+            Point result = new Point();
+            bool IsX = (int)point_change.X/2==0; // Рандомное начальное значение
+
+            if (good_point.Length!=1)
+            {
+                IsX = Sort_Points(good_point) == 2; //Проверяем ориентацию корабля
+            }
+
+            if (IsX) //Если горабль расположен горизонтально
+            {
+                if (good_point[good_point.Length-1].X != 9) //Если есть куда прибавлять
+                {
+                    result = good_point[good_point.Length - 1];
+                    result.X += 1;
+                }
+                else
+                {
+                    result = good_point[0];
+                    result.X -= 1;
+                }                
+            }
+            else
+            {
+                if (good_point[good_point.Length-1].Y != 9)
+                {
+                    result = good_point[good_point.Length - 1];
+                    result.Y += 1;
+                }
+                else
+                {
+                    result = good_point[0];
+                    result.Y -= 1;
+                }
+            }
+
+            return result;
+        }
+
+        //Сохранение матрицы состояния
+        public static void Save_Matrix(Unit[,] matrix_state, Unit[,] saved_state)
+        {
+            for (int i = 0; i < matrix_state.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix_state.GetLength(1); j++)
+                {
+                    saved_state[i, j] = new Unit(matrix_state[i, j].Get_Unit_Type(), matrix_state[i, j].Get_Position_I(), matrix_state[i, j].Get_Position_J());
+                }
+            }
+        }
+
+        //Загрузка матрицы состояния
+        public static void Load_Matrix(Unit[,] matrix_state, Unit[,] saved_state)
+        {
+            for (int i = 0; i < saved_state.GetLength(0); i++)
+            {
+                for (int j = 0; j < saved_state.GetLength(1); j++)
+                {
+                    matrix_state[i, j] = new Unit(saved_state[i, j].Get_Unit_Type(), saved_state[i, j].Get_Position_I(), saved_state[i, j].Get_Position_J());
+                }
             }
         }
     }

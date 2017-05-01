@@ -115,19 +115,19 @@ namespace Field_project
                     {
                         if (Utilits.Check_Ship(ship_points.ToArray(), matrix_state, (byte)type_ship)) //Проверка корректности установки ячеек
                         {
-                            Save_Matrix(matrix_state); //Сохраняем состояние поля
+                            Utilits.Save_Matrix(matrix_state, saved_state); //Сохраняем состояние поля
                         }
                         else //Если выставленные ячейки не корректны
                         {
                             ships.Back_Stage(); //Откатываем счетчик установки кораблей назад
-                            Load_Matrix(); //Загружаем предидущее состояние
+                            Utilits.Load_Matrix(matrix_state, saved_state); //Загружаем предидущее состояние
                             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
                         }
                         ship_points.Clear(); //Очищаем набор точек (временный набор точек, который заполняется при установке ячеек корабля)
                     }
                     else if (type_ship==-1) //Если установка закончена (нет больше доступных кораблей для установки)
                     {
-                        Load_Matrix(); //Загружаем матрицу состояния
+                        Utilits.Load_Matrix(matrix_state, saved_state); //Загружаем матрицу состояния
                         ship_points.Clear(); //Очищаем набор точек
                         Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
                     }
@@ -141,28 +141,14 @@ namespace Field_project
             }
         }
 
-        //Сохранение матрицы состояния
-        private void Save_Matrix(Unit[,] matrix_state)
-        {
-            for(int i=0; i<matrix_state.GetLength(0);i++)
-            {
-                for(int j=0; j<matrix_state.GetLength(1);j++)
-                {
-                    saved_state[i,j] = new Unit(matrix_state[i, j].Get_Unit_Type(), matrix_state[i, j].Get_Position_I(), matrix_state[i, j].Get_Position_J());
-                }
-            }
-        }
+       
 
-        //Загрузка матрицы состояния
-        private void Load_Matrix()
+        // Авто-заполнение поля
+        public void AutoSetShips()
         {
-            for (int i = 0; i < saved_state.GetLength(0); i++)
-            {
-                for (int j = 0; j < saved_state.GetLength(1); j++)
-                {
-                    matrix_state[i, j] = new Unit(saved_state[i, j].Get_Unit_Type(), saved_state[i, j].Get_Position_I(), saved_state[i, j].Get_Position_J());
-                }
-            }
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
+            AutoAction.AutoSetShips(ref matrix_state);
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state);
         }
     }
 }
