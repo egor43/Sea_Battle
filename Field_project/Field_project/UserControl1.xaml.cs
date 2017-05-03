@@ -130,6 +130,8 @@ namespace Field_project
                         Utilits.Load_Matrix(matrix_state, saved_state); //Загружаем матрицу состояния
                         ship_points.Clear(); //Очищаем набор точек
                         Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
+                        field_type = type_field.user_field; // Меняем тип поля
+                        grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
                     }
                     break;
 
@@ -139,16 +141,15 @@ namespace Field_project
                 case type_field.user_field: //Если тип поля "поле игрока"
                     break;
             }
-        }
-
-       
+        }       
 
         // Авто-заполнение поля
         public void AutoSetShips()
         {
-            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp);
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp); // Инициализируем матрицу по новой, чтобы она была "чистой"
             AutoAction.AutoSetShips(ref matrix_state);
-            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state);
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка новой, заполненной матрицы
+            grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
         }
     }
 }

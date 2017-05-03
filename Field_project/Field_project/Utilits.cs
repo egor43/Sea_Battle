@@ -302,18 +302,18 @@ namespace Field_project
             return result;
         }
 
-        // Приводит точку point_change к соседней с good_point
+        // Приводит точку point_change к соседней с good_point. Предварительно определяя ориентацию точек. Чтобы они шли в одну линию.
         public static Point NormalizedPoint(Point[] good_point, Point point_change)
         {
             Point result = new Point();
-            bool IsX = (int)point_change.X/2==0; // Рандомное начальное значение
+            bool IsHorizontal = (int)point_change.X/2==0; // Рандомное начальное значение
 
             if (good_point.Length!=1)
             {
-                IsX = Sort_Points(good_point) == 2; //Проверяем ориентацию корабля
+                IsHorizontal = good_point[0].X==good_point[1].X; //Проверяем ориентацию корабля
             }
 
-            if (IsX) //Если горабль расположен горизонтально
+            if (!IsHorizontal) //Если горабль расположен горизонтально
             {
                 if (good_point[good_point.Length-1].X != 9) //Если есть куда прибавлять
                 {
