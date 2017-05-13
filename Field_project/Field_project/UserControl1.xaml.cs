@@ -30,6 +30,7 @@ namespace Field_project
         List<Point> ship_points = new List<Point>(); //Список, хранящий ячейки кораблей для их дальнейшей обработки
         private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
         Computer comp_ii; //Компьютерный недоинтеллект
+        string message = ""; // Строка для общения с ИИ и онлайном
 
 
         //Режимы игры

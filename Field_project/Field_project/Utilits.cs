@@ -368,7 +368,7 @@ namespace Field_project
         }
 
         //Обработка строки с ответом
-        public bool IsMyStep
+        
 
     }
 }

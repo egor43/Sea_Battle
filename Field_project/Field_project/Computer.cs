@@ -9,17 +9,18 @@ namespace Field_project
 {
     class Computer
     {
-        Unit[,] Matrix_Com_My;
-        Unit[,] Matrix_Com_Enemy;
+        Unit[,] Matrix_Com_My = new Unit[10, 10];
+        Unit[,] Matrix_Com_Enemy = new Unit[10, 10];
         public Computer()
         {
-            Unit[,] Matrix_Com_My = new Unit[10,10];
-            AutoAction.AutoSetShips(ref Matrix_Com_My);
-
-            Unit[,] Matrix_Com_Enemy = new Unit[10, 10];
             for (int i = 0; i < Matrix_Com_Enemy.GetLength(0); i++)
                 for (int j = 0; j < Matrix_Com_Enemy.GetLength(1); j++)
-                    Matrix_Com_Enemy[i, j].Set_Unit_Type(unit_type.sea);
+                {
+                    Matrix_Com_Enemy[i, j]=new Unit(unit_type.sea,i,j);
+                    Matrix_Com_My[i, j]=new Unit(unit_type.sea, i, j);
+                }
+            AutoAction.AutoSetShips(ref Matrix_Com_My);
+            
 
         }
 
