@@ -61,12 +61,30 @@ namespace Field_project
             }          
         }
 
-        // Что делает метод! Руся, не забудь коменты 
+        //Атака компьютера по человеку 
         public static Point AutoAttack(ref Unit[,] matrix_state)
         {
-            Point result = new Point(-1, -1);
+            Random rnd = new Random();
+            Point tmp = new Point(0,0); // создаем темповую точку, для того, чтобы менять ее, если вдруг точка не пустая
+            int x = 0, y = 0; // Координаты x,y для матрицы
+            bool flag = true; // Для вызода из цикла
+
+            while (flag)//Не выходим изцикла пока что не найдем точку с морем
+            {
+                x = rnd.Next(0, 10);
+                Thread.Sleep(10);//Задержка, чтобы рандом был рандомным
+                y = rnd.Next(0, 10);
+
+                if (matrix_state[x, y].Get_Unit_Type() == unit_type.sea)//Сравниваем тип ячейки входной матрицы с типом моря
+                                                                        //И если всё хорошо, то выходим из цикла и в темповую переменную кидаем эту точку
+                {
+                    flag = false;
+                    tmp = new Point(x,y);
+                }
+            }
+
+            Point result = tmp;
             return result;
-        
         }
         
     }
