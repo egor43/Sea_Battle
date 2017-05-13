@@ -25,17 +25,9 @@ namespace Field_project
 
         private Unit[,] matrix_state = new Unit [10,10]; //Матрица состояния игрового поля
         public type_field field_type = type_field.set_field; //Тип игрового поля
-        public game_mode mode_game = game_mode.offline_game; //Режим игры
         private Ships ships = new Ships(); //Объект обеспечивающий работу с методами по подсчету кораблей
         List<Point> ship_points = new List<Point>(); //Список, хранящий ячейки кораблей для их дальнейшей обработки
         private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
-
-        //Режимы игры
-        public enum game_mode
-        {
-            offline_game=0,
-            online_game=1
-        }
 
         //Перечисление типов поля set_field - поле установки кораблей, user_field - поле игрока, enemy_field - поле врага
         public enum type_field
@@ -144,16 +136,6 @@ namespace Field_project
                     break;
 
                 case type_field.enemy_field: //Если тип поля "поле врага"
-                    if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
-                    if(mode_game==game_mode.offline_game)
-                    {
-                        // отдать координаты по которым ткунули в класс ИИ
-                        // получить ответ от класса ИИ
-                    }
-                    else
-                    {
-                        // Игра по сети
-                    }
                     break;
 
                 case type_field.user_field: //Если тип поля "поле игрока"

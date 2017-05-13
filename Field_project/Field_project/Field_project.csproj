@@ -48,7 +48,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Computer.cs" />
     <Compile Include="Utilits.cs" />
     <Page Include="UserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>
