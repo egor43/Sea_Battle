@@ -29,6 +29,8 @@ namespace Field_project
         private Ships ships = new Ships(); //Объект обеспечивающий работу с методами по подсчету кораблей
         List<Point> ship_points = new List<Point>(); //Список, хранящий ячейки кораблей для их дальнейшей обработки
         private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
+        Computer comp_ii; //Компьютерный недоинтеллект
+
 
         //Режимы игры
         public enum game_mode
@@ -105,6 +107,11 @@ namespace Field_project
             window.Height = Unit.Get_Size_Unit() * 10; //Устанавливаем размер поля высотой равной 10 ячейкам
             Initinitialization_Grid(Unit.Get_Size_Unit()); //Проводим ""расчерчивание поля
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp); //Проводим инициализацию поля
+            if(mode_game==game_mode.offline_game) //Если офлайн режим
+            {
+                comp_ii = new Computer();
+            }
+
         }
 
         // Обрабатывает нажатия на ячейку в зависимости от режима поля (режимы: установка кораблей, поле врага, поле игрока)
@@ -146,7 +153,7 @@ namespace Field_project
                 case type_field.enemy_field: //Если тип поля "поле врага"
                     if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
                     if(mode_game==game_mode.offline_game)
-                    {
+                    {       
                         // отдать координаты по которым ткунули в класс ИИ
                         // получить ответ от класса ИИ
                     }
