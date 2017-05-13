@@ -28,20 +28,28 @@ namespace Field_project
         {
             string answer = "";
             int x = 0, y = 0;
-            x = (int)attach[0];
-            y = (int)attach[1];
-
-
-            if (Matrix_Com_My[x, y].Get_Unit_Type() == unit_type.sea)
+            if (attach == "+++" || attach == "***")
             {
+               
                 Point tmp = AutoAction.AutoAttack(ref Matrix_Com_Enemy);
                 answer = answer + tmp.X.ToString();
                 answer = answer + tmp.Y.ToString();
                 answer = answer + "-";
             }
-            if (Matrix_Com_My[x, y].Get_Unit_Type() == unit_type.ship)
-                answer = answer + "+++";
-
+            else
+            {
+                x = Int32.Parse(attach[0].ToString());
+                y = Int32.Parse(attach[1].ToString());
+                if (Matrix_Com_My[x, y].Get_Unit_Type() == unit_type.sea)
+                {
+                    Point tmp = AutoAction.AutoAttack(ref Matrix_Com_Enemy);
+                    answer = answer + tmp.X.ToString();
+                    answer = answer + tmp.Y.ToString();
+                    answer = answer + "-";
+                }
+                if (Matrix_Com_My[x, y].Get_Unit_Type() == unit_type.ship)
+                    answer = answer + "+++";
+            }       
             return answer;
         }
     }

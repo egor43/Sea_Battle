@@ -23,12 +23,15 @@ namespace WpfApplication2
         public MainWindow()
         {
             InitializeComponent();
-            Attack_Field.field_type = Field_project.UserControl1.type_field.enemy_field;
+            Attack_Field.SetFieldType(Field_project.UserControl1.type_field.enemy_field);
+            
+            
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             game_field.AutoSetShips();
+            
         }
     }
 }

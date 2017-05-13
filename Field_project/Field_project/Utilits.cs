@@ -9,7 +9,10 @@ namespace Field_project
 {
     static class Utilits
     {
-       
+        public delegate string CheckUnit(int i, int j);
+
+        public static event CheckUnit UnitEvent;
+
         //Проверка корректности расположения корабля
         public static bool Check_Ship(Point[] points, Unit[,] state, byte count_value_ship)
         {
@@ -367,8 +370,27 @@ namespace Field_project
             }
         }
 
-        //Обработка строки с ответом
-        
+        //Обработка сообщения
+        public static string ProcessingMessage(string message, Unit pressed_unit)
+        {
+            string ret = "";
+            
+            if (message[2]=='+' || message[2]=='*') //проверяем попали ли мы в корабль врага
+            {
+                //если мы попали надо отметить это на поле врага и подготовить сообщение к следующему ходу
+                pressed_unit.Set_Unit_Type(unit_type.hit_ship);
+                ret = "";
+            }
+            else
+            {
+                int x = Int32.Parse(message[0].ToString());
+                int y = Int32.Parse(message[1].ToString());
+                //если мы не попали, отмечаем это на поле врага и проверяем, куда стрельнул враг и подготовить сообщение исходя из того, куда попал враг
+                pressed_unit.Set_Unit_Type(unit_type.hit_sea);
+                ret = UnitEvent(x, y);
+            }
+            return ret;
+        }
 
     }
 }

@@ -24,8 +24,8 @@ namespace Field_project
         //Переменные класса пользовательского элемента Field ("игровое поле")
 
         private Unit[,] matrix_state = new Unit [10,10]; //Матрица состояния игрового поля
-        public type_field field_type = type_field.set_field; //Тип игрового поля
-        public game_mode mode_game = game_mode.offline_game; //Режим игры
+        private type_field field_type = type_field.set_field; //Тип игрового поля
+        private game_mode mode_game = game_mode.offline_game; //Режим игры
         private Ships ships = new Ships(); //Объект обеспечивающий работу с методами по подсчету кораблей
         List<Point> ship_points = new List<Point>(); //Список, хранящий ячейки кораблей для их дальнейшей обработки
         private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
@@ -112,7 +112,16 @@ namespace Field_project
             {
                 comp_ii = new Computer();
             }
+            field_type = type_field.set_field;      
+        }
 
+        public void SetFieldType(type_field field_type)
+        {
+            this.field_type = field_type;
+            if(field_type==type_field.user_field)
+            {
+                Utilits.UnitEvent += Processing_Unit;
+            }
         }
 
         // Обрабатывает нажатия на ячейку в зависимости от режима поля (режимы: установка кораблей, поле врага, поле игрока)
@@ -146,7 +155,7 @@ namespace Field_project
                         Utilits.Load_Matrix(matrix_state, saved_state); //Загружаем матрицу состояния
                         ship_points.Clear(); //Очищаем набор точек
                         Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
-                        field_type = type_field.user_field; // Меняем тип поля
+                        SetFieldType(type_field.user_field); // Меняем тип поля
                         grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
                     }
                     break;
@@ -154,9 +163,16 @@ namespace Field_project
                 case type_field.enemy_field: //Если тип поля "поле врага"
                     if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
                     if(mode_game==game_mode.offline_game)
-                    {       
-                        // отдать координаты по которым ткунули в класс ИИ
-                        // получить ответ от класса ИИ
+                    {
+                        if(message!="+++" || message!="***")
+                        {
+                            message = unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + message;
+                        }
+                        do
+                        {
+                            message = comp_ii.GetCoordinat(message);
+                            message = Utilits.ProcessingMessage(message, unit);
+                        } while (message == "+++" || message == "***");                      
                     }
                     else
                     {
@@ -165,8 +181,10 @@ namespace Field_project
                     break;
 
                 case type_field.user_field: //Если тип поля "поле игрока"
+                    
                     break;
             }
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка
         }       
 
         // Авто-заполнение поля
@@ -174,8 +192,27 @@ namespace Field_project
         {
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp); // Инициализируем матрицу по новой, чтобы она была "чистой"
             AutoAction.AutoSetShips(ref matrix_state);
+            SetFieldType(type_field.user_field);
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка новой, заполненной матрицы
             grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
+        }
+
+        private string Processing_Unit(int i, int j)
+        {
+            string result = "";
+            switch (matrix_state[i,j].Get_Unit_Type())
+            {
+                case unit_type.sea:
+                    matrix_state[i, j].Set_Unit_Type(unit_type.hit_sea);
+                    result = "-";
+                    break;
+                case unit_type.ship:
+                    matrix_state[i, j].Set_Unit_Type(unit_type.hit_ship);
+                    result = "+++";
+                    break;
+            }
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка
+            return result;
         }
     }
 }
