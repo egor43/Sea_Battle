@@ -81,6 +81,7 @@ namespace Field_project
                 {
                     flag = false;
                     tmp = new Point(x,y);
+                    matrix_state[x, y].Set_Unit_Type(unit_type.hit_sea);
                 }
             }
 

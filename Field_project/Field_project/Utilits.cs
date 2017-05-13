@@ -392,5 +392,20 @@ namespace Field_project
             return ret;
         }
 
+        // Достигли ли мы конца игры
+        public static bool IsEndGame(Unit[,] matrix_state)
+        {
+            bool is_end = true;
+            // рассматриваем матрицу состояния
+            for(int line=0; line<matrix_state.GetLength(0); line++)
+            {
+                for (int column = 0; column < matrix_state.GetLength(1); column++)
+                {
+                    // ищем в ней целые кусочки кораблей
+                    if (matrix_state[line, column].Get_Unit_Type() == unit_type.ship) is_end = false; // если нашли - значит еще не конец игры
+                }
+            }              
+            return is_end;
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace Field_project
 
         }
 
+
         public string GetCoordinat(string attach)
         {
             string answer = "";
@@ -48,7 +49,15 @@ namespace Field_project
                     answer = answer + "-";
                 }
                 if (Matrix_Com_My[x, y].Get_Unit_Type() == unit_type.ship)
-                    answer = answer + "+++";
+                {
+                    Matrix_Com_My[x, y].Set_Unit_Type(unit_type.hit_ship);
+                    answer = "+++";
+                }
+                if(Utilits.IsEndGame(Matrix_Com_My))
+                {
+                    answer = "end";
+                }    
+
             }       
             return answer;
         }

@@ -171,7 +171,15 @@ namespace Field_project
                         do
                         {
                             message = comp_ii.GetCoordinat(message);
+                            if (message == "end")
+                            {
+                                MessageBox.Show("Вы выиграли!");
+                            }
                             message = Utilits.ProcessingMessage(message, unit);
+                            if(message=="end")
+                            {
+                                MessageBox.Show("Вы проиграли!");
+                            }
                         } while (message == "+++" || message == "***");                      
                     }
                     else
@@ -210,6 +218,10 @@ namespace Field_project
                     matrix_state[i, j].Set_Unit_Type(unit_type.hit_ship);
                     result = "+++";
                     break;
+            }
+            if(Utilits.IsEndGame(matrix_state))
+            {
+                result = "end";
             }
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка
             return result;
