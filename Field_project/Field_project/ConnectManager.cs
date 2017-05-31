@@ -18,6 +18,8 @@ namespace Field_project
         //Конструктор, который выдает Id
         public ConnectManager()
         {
+
+
             client.Connect(server, port);
             NetworkStream stream = client.GetStream();
             byte[] data = Encoding.UTF8.GetBytes(Id);
@@ -31,26 +33,13 @@ namespace Field_project
             client.Close();
         }
 
-        //Тупой метод чтения сообщений
-        private string GetMessage()
-        {
-            client.Connect(server, port);
-            NetworkStream stream = client.GetStream();
-
-            byte[] data = new byte[3];
-            int bytes = stream.Read(data, 0, data.Length); // получаем количество считанных байтов
-            string message = Encoding.UTF8.GetString(data, 0, count);
-
-            stream.Close();
-            return message;
-        }
-
         //Тупой метод отправки сообщений
         private void SetMessage(string message)
         {
             if (message.Length != 3)
                 throw new Exception("Сообщение некорректной длины");
-            client.Connect(server, port);
+            //client = new TcpClient();
+            //client.Connect(server, port);
             NetworkStream stream = client.GetStream();
 
             byte[] data = Encoding.UTF8.GetBytes(message);
@@ -62,6 +51,7 @@ namespace Field_project
         //Проверяет возможен ли ход или сейчас ход другого игрока
         public bool IsMyStep()
         {
+            client = new TcpClient();
             client.Connect(server, port);
             NetworkStream stream = client.GetStream();
             byte[] data = Encoding.UTF8.GetBytes(Id);
@@ -70,11 +60,11 @@ namespace Field_project
             string message = Encoding.UTF8.GetString(data, 0, count);
             if (message == "ok0")
             {
-                stream.Close();
                 return true;
             }
             else
             {
+                client.Close();
                 stream.Close();
                 return false;
             }
@@ -84,22 +74,40 @@ namespace Field_project
         //Устанавливает полезное сообщение
         public void SetUsefulMessage(string message)
         {
-            SetMessage("set");
+            if (message.Length != 3)
+                throw new Exception("Сообщение некорректной длины");
+            NetworkStream stream = client.GetStream();
+
+            byte[] data = Encoding.UTF8.GetBytes("set");
+            stream.Write(data, 0, data.Length);
             System.Threading.Thread.Sleep(1000);
-            SetMessage(message);
+
+            data = Encoding.UTF8.GetBytes(message);
+            stream.Write(data, 0, data.Length);
         }
 
         //Получает полезное сообщение
         public string GetUsefulMessage()
         {
-            SetMessage("get");
-            return GetMessage();
+            NetworkStream stream = client.GetStream();
+
+            byte[] data = Encoding.UTF8.GetBytes("get");
+            stream.Write(data, 0, data.Length);
+
+            int bytes = stream.Read(data, 0, data.Length); // получаем количество считанных байтов
+            string message = Encoding.UTF8.GetString(data, 0, count);
+
+            return message;
         }
 
         //Закрытие сессии и переключение на другого клиента
         public void EndSession()
         {
-            SetMessage("ok1");
+            NetworkStream stream = client.GetStream();
+
+            byte[] data = Encoding.UTF8.GetBytes("ok1");
+            stream.Write(data, 0, data.Length);
+            stream.Close();
             client.Close();
         }
     }

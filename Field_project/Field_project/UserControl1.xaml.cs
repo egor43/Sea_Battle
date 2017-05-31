@@ -222,6 +222,11 @@ namespace Field_project
                                     online_client.EndSession(); // Закрываем сессию.
                                 }
                             }
+                            else
+                            {
+                                break;
+                            }
+                            System.Threading.Thread.Sleep(10000);
                         } while (true);
                         
                     }
