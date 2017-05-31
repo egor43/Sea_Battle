@@ -373,13 +373,18 @@ namespace Field_project
         //Обработка сообщения
         public static string ProcessingMessage(string message, Unit pressed_unit)
         {
-            string ret = "";
+            string ret = " ";
             
+            if( message == "non" )
+            {
+                return ret;
+            }
+
             if (message[2]=='+' || message[2]=='*') //проверяем попали ли мы в корабль врага
             {
                 //если мы попали надо отметить это на поле врага и подготовить сообщение к следующему ходу
                 pressed_unit.Set_Unit_Type(unit_type.hit_ship);
-                ret = "";
+                ret = " ";
             }
             else
             {
@@ -387,7 +392,7 @@ namespace Field_project
                 int y = Int32.Parse(message[1].ToString());
                 //если мы не попали, отмечаем это на поле врага и проверяем, куда стрельнул враг и подготовить сообщение исходя из того, куда попал враг
                 pressed_unit.Set_Unit_Type(unit_type.hit_sea);
-                ret = UnitEvent(x, y);
+                ret = UnitEvent(x, y); // Запили проверку на Null
             }
             return ret;
         }

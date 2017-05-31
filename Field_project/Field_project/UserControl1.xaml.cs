@@ -31,7 +31,7 @@ namespace Field_project
         private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
         Computer comp_ii; //Компьютерный недоинтеллект
         string message = ""; // Строка для общения с ИИ и онлайном
-
+        ConnectManager online_client; // Клиент для работы с сетью
 
         //Режимы игры
         public enum game_mode
@@ -115,12 +115,23 @@ namespace Field_project
             field_type = type_field.set_field;      
         }
 
+        // Устанавливает тип поля
         public void SetFieldType(type_field field_type)
         {
             this.field_type = field_type;
             if(field_type==type_field.user_field)
             {
                 Utilits.UnitEvent += Processing_Unit;
+            }
+        }
+
+        // Устанавливает режим игры
+        public void SetModeType(game_mode mode)
+        {
+            this.mode_game = mode;
+            if( this.mode_game == game_mode.online_game )
+            {
+                online_client = new ConnectManager(); // Создаем подключение
             }
         }
 
@@ -161,30 +172,58 @@ namespace Field_project
                     break;
 
                 case type_field.enemy_field: //Если тип поля "поле врага"
-                    if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
-                    if(mode_game==game_mode.offline_game)
+                    try
                     {
-                        if(message!="+++" || message!="***")
+                        if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
+                    }
+                    catch(Exception)
+                    {
+                        MessageBox.Show("Не туда ткнул");
+                    }
+                    if(mode_game==game_mode.offline_game) //если режим - офлайн
+                    {
+                        if(message!="+" || message!="*") //если по нашим кораблям не попали
                         {
-                            message = unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + message;
+                            message = unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + message; //составляем сообщение об атаке
                         }
                         do
                         {
-                            message = comp_ii.GetCoordinat(message);
-                            if (message == "end")
+                            message = comp_ii.GetCoordinat(message); //получаем сообщение от ИИ
+                            if (message == "end") // Если конец игры
                             {
                                 MessageBox.Show("Вы выиграли!");
                             }
-                            message = Utilits.ProcessingMessage(message, unit);
+                            message = Utilits.ProcessingMessage(message, unit); // Обрабатываем сообщение от ИИ
                             if(message=="end")
                             {
                                 MessageBox.Show("Вы проиграли!");
                             }
-                        } while (message == "+++" || message == "***");                      
+                        } while (message == "+++" || message == "***"); //Повторяем если ИИ попал в корабль
                     }
-                    else
+                    else // Игра по сети
                     {
-                        // Игра по сети
+                        do
+                        {
+                            if (online_client.IsMyStep()) // Если наш ход
+                            {
+                                message = online_client.GetUsefulMessage(); // Получаем сообщение об атаке
+                                message = Utilits.ProcessingMessage(message, unit); // Обрабатываем сообщение от ИИ
+
+                                if (message != "+" || message != "*") // Eсли по нашим кораблям не попали
+                                {
+                                    message = unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + message; //составляем сообщение об атаке
+                                    online_client.SetUsefulMessage(message); // Передаем сообщение об атаке
+                                    online_client.EndSession(); // Закрываем сессию.
+                                    break;
+                                }
+                                else
+                                {
+                                    online_client.SetUsefulMessage("+++"); // Передаем сообщение об атаке
+                                    online_client.EndSession(); // Закрываем сессию.
+                                }
+                            }
+                        } while (true);
+                        
                     }
                     break;
 
@@ -205,20 +244,24 @@ namespace Field_project
             grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
         }
 
+        //Обработка поля типа user_field. На вход поступают координаты, куда стрелял враг. На выходе - сообщение для врага
         private string Processing_Unit(int i, int j)
         {
             string result = "";
             switch (matrix_state[i,j].Get_Unit_Type())
             {
+                //Если попали в море
                 case unit_type.sea:
                     matrix_state[i, j].Set_Unit_Type(unit_type.hit_sea);
                     result = "-";
                     break;
+                //Если попали в корабль
                 case unit_type.ship:
                     matrix_state[i, j].Set_Unit_Type(unit_type.hit_ship);
-                    result = "+++";
+                    result = "+";
                     break;
             }
+            //Если достигли конца игры
             if(Utilits.IsEndGame(matrix_state))
             {
                 result = "end";

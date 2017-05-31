@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Field_project;
 
 namespace WpfApplication2
 {
@@ -23,8 +24,7 @@ namespace WpfApplication2
         public MainWindow()
         {
             InitializeComponent();
-            Attack_Field.SetFieldType(Field_project.UserControl1.type_field.enemy_field);
-            
+            Attack_Field.SetFieldType( UserControl1.type_field.enemy_field );
             
         }
 
@@ -32,6 +32,16 @@ namespace WpfApplication2
         {
             game_field.AutoSetShips();
             
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.IsEnabled = false;
+            if( MessageBox.Show( "Вы будете играть в сетевом режиме?", "Режим игры",  MessageBoxButton.YesNo) == MessageBoxResult.Yes )
+            {
+                Attack_Field.SetModeType(UserControl1.game_mode.online_game);
+            }
+            this.IsEnabled = true;
         }
     }
 }
