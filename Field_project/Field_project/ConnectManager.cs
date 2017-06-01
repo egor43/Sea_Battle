@@ -16,17 +16,19 @@ namespace Field_project
         private string Id = "id0";
 
         //Конструктор, который выдает Id
-        public ConnectManager()
+        public ConnectManager(string state)
         {
-
+            
 
             client.Connect(server, port);
             NetworkStream stream = client.GetStream();
             byte[] data = Encoding.UTF8.GetBytes(Id);
-
             stream.Write(data, 0, data.Length);//Отправляем сообщение 
             stream.Read(data, 0, data.Length);//Получаем сообщение 
             Id = Encoding.UTF8.GetString(data, 0, count);//Присваиваем полученный id новому пользователю
+
+            byte[] dataM = Encoding.UTF8.GetBytes(state);
+            stream.Write(dataM, 0, dataM.Length);
 
             // Закрываем потоки
             stream.Close();
@@ -34,18 +36,15 @@ namespace Field_project
         }
 
         //Тупой метод отправки сообщений
-        private void SetMessage(string message)
+        public void SetMessage(string message)
         {
             if (message.Length != 3)
                 throw new Exception("Сообщение некорректной длины");
-            //client = new TcpClient();
-            //client.Connect(server, port);
+
             NetworkStream stream = client.GetStream();
 
             byte[] data = Encoding.UTF8.GetBytes(message);
             stream.Write(data, 0, data.Length);
-
-            stream.Close();
         }
 
         //Проверяет возможен ли ход или сейчас ход другого игрока
@@ -72,14 +71,15 @@ namespace Field_project
         }
 
         //Устанавливает полезное сообщение
-        public void SetUsefulMessage(string message)
+        public void SetUsefulMessage(string message, string responce)
         {
             if (message.Length != 3)
                 throw new Exception("Сообщение некорректной длины");
-            NetworkStream stream = client.GetStream();
 
-            byte[] data = Encoding.UTF8.GetBytes("set");
+            NetworkStream stream = client.GetStream();
+            byte[] data = Encoding.UTF8.GetBytes(responce);
             stream.Write(data, 0, data.Length);
+
             System.Threading.Thread.Sleep(1000);
 
             data = Encoding.UTF8.GetBytes(message);
@@ -87,12 +87,24 @@ namespace Field_project
         }
 
         //Получает полезное сообщение
-        public string GetUsefulMessage()
+        public string GetUsefulMessage(string responce)
         {
             NetworkStream stream = client.GetStream();
 
-            byte[] data = Encoding.UTF8.GetBytes("get");
+            byte[] data = Encoding.UTF8.GetBytes(responce);
             stream.Write(data, 0, data.Length);
+
+            int bytes = stream.Read(data, 0, data.Length); // получаем количество считанных байтов
+            string message = Encoding.UTF8.GetString(data, 0, count);
+
+            return message;
+        }
+
+        public string GetMessage()
+        {
+            NetworkStream stream = client.GetStream();
+
+            byte[] data = new byte[1];
 
             int bytes = stream.Read(data, 0, data.Length); // получаем количество считанных байтов
             string message = Encoding.UTF8.GetString(data, 0, count);

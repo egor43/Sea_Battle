@@ -56,7 +56,8 @@ namespace Field_project
                 }
                 else if (type_ship == -1) //Если установка закончена (нет больше доступных кораблей для установки)
                 {
-                    Utilits.Load_Matrix(matrix_state, saved_state); //Загружаем матрицу состояния
+                    Utilits.Load_Matrix(matrix_state, saved_state); //Загружаем матрицу состояния'
+
                     break;
                 }
             }          

@@ -13,6 +13,28 @@ namespace Field_project
 
         public static event CheckUnit UnitEvent;
 
+        //Метод переводящий матрицу состояния кораблей в строку, для отправки на сервер
+        public static string ParseMatric(Unit[,] state)
+        {
+            string parsematrix = "";
+
+            for (int i = 0; i < state.GetLength(0); i++)
+            {
+                for (int j = 0; j < state.GetLength(1); j++)
+                {
+                    if (state[i, j].Get_Unit_Type() == 0)
+                    {
+                        parsematrix = parsematrix + "0";
+                    }
+                    else
+                    {
+                        parsematrix = parsematrix + "1";
+                    }
+                }
+            }
+            return parsematrix;
+        }
+
         //Проверка корректности расположения корабля
         public static bool Check_Ship(Point[] points, Unit[,] state, byte count_value_ship)
         {
@@ -395,6 +417,27 @@ namespace Field_project
                 ret = UnitEvent(x, y); // Запили проверку на Null
             }
             return ret;
+        }
+
+        //Парсинг строки приходящих ударов от противника
+        public static void ProcessingOnlineMessage(string message)
+        {
+            string ret = " ";
+
+            if (message == "non")
+            {
+                return;
+            }
+            else
+            {
+                for (int i = 0; i < message.Length; i += 2)
+                {
+                    int x = Int32.Parse(message[i].ToString());
+                    int y = Int32.Parse(message[i+1].ToString());
+
+                    ret = UnitEvent(x, y); // Запили проверку на Null
+                }
+            }
         }
 
         // Достигли ли мы конца игры

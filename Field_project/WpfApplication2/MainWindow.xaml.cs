@@ -40,6 +40,7 @@ namespace WpfApplication2
             if( MessageBox.Show( "Вы будете играть в сетевом режиме?", "Режим игры",  MessageBoxButton.YesNo) == MessageBoxResult.Yes )
             {
                 Attack_Field.SetModeType(UserControl1.game_mode.online_game);
+                game_field.SetModeType(UserControl1.game_mode.online_game);
             }
             this.IsEnabled = true;
         }

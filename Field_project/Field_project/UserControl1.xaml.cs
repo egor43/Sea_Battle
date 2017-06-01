@@ -31,7 +31,8 @@ namespace Field_project
         private Unit[,] saved_state = new Unit[10, 10]; //Матрица для сохранения промежуточного состояния поля
         Computer comp_ii; //Компьютерный недоинтеллект
         string message = ""; // Строка для общения с ИИ и онлайном
-        ConnectManager online_client; // Клиент для работы с сетью
+        static ConnectManager online_client; // Клиент для работы с сетью
+        bool CheckIdFlag = true; //Флаг для обхода проверки при повторном ударе
 
         //Режимы игры
         public enum game_mode
@@ -129,10 +130,6 @@ namespace Field_project
         public void SetModeType(game_mode mode)
         {
             this.mode_game = mode;
-            if( this.mode_game == game_mode.online_game )
-            {
-                online_client = new ConnectManager(); // Создаем подключение
-            }
         }
 
         // Обрабатывает нажатия на ячейку в зависимости от режима поля (режимы: установка кораблей, поле врага, поле игрока)
@@ -168,6 +165,10 @@ namespace Field_project
                         Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
                         SetFieldType(type_field.user_field); // Меняем тип поля
                         grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
+                        if (this.mode_game == game_mode.online_game)
+                        {
+                            online_client = new ConnectManager(Utilits.ParseMatric(matrix_state)); // Создаем подключение
+                        }
                     }
                     break;
 
@@ -202,7 +203,52 @@ namespace Field_project
                     }
                     else // Игра по сети
                     {
-                        do
+
+                        if (CheckIdFlag) 
+                        {
+                            if (CheckIdFlag && online_client.IsMyStep()) // Если наш ход
+                            {
+                                message = online_client.GetUsefulMessage("gtd");
+                                Utilits.ProcessingOnlineMessage(message);
+                                online_client.SetUsefulMessage(unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + " ", "stm");
+                                if (online_client.GetMessage() == "+")
+                                {
+                                    CheckIdFlag = false;
+                                    unit.Set_Unit_Type(unit_type.hit_ship);
+                                    return;
+                                }
+                                else
+                                {
+                                    CheckIdFlag = true;
+                                    unit.Set_Unit_Type(unit_type.hit_sea);
+                                    online_client.SetMessage("ok1");
+                                    return;
+                                }
+                            }
+                            else //добавить окошечко
+                            {
+                                MessageBox.Show("Соси хуй, луст пидор");
+                            }
+                        }
+                        else
+                        {
+                            online_client.SetUsefulMessage(unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + " ", "stm");
+                            if (online_client.GetMessage() == "+")
+                            {
+                                CheckIdFlag = false;
+                                unit.Set_Unit_Type(unit_type.hit_ship);
+                                return;
+                            }
+                            else
+                            {
+                                CheckIdFlag = true;
+                                unit.Set_Unit_Type(unit_type.hit_sea);
+                                online_client.SetMessage("ok1");
+                                return;
+                            }
+                        }
+
+                        /*do
                         {
                             if (online_client.IsMyStep()) // Если наш ход
                             {
@@ -227,7 +273,7 @@ namespace Field_project
                                 break;
                             }
                             System.Threading.Thread.Sleep(10000);
-                        } while (true);
+                        } while (true);*/
                         
                     }
                     break;
@@ -247,6 +293,10 @@ namespace Field_project
             SetFieldType(type_field.user_field);
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка новой, заполненной матрицы
             grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
+            if (this.mode_game == game_mode.online_game)
+            {
+                online_client = new ConnectManager(Utilits.ParseMatric(matrix_state)); // Создаем подключение
+            }
         }
 
         //Обработка поля типа user_field. На вход поступают координаты, куда стрелял враг. На выходе - сообщение для врага
