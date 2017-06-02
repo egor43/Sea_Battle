@@ -9,7 +9,7 @@ namespace Field_project
 {
     public class ConnectManager
     {
-        private const int port = 3000;
+        private const short port = 3000;
         private const string server = "192.168.43.251";
         private const short count = 3;
         TcpClient client = new TcpClient();
@@ -50,24 +50,31 @@ namespace Field_project
         //Проверяет возможен ли ход или сейчас ход другого игрока
         public bool IsMyStep()
         {
-            client = new TcpClient();
-            client.Connect(server, port);
-            NetworkStream stream = client.GetStream();
-            byte[] data = Encoding.UTF8.GetBytes(Id);
-            stream.Write(data, 0, data.Length);//Отправляем сообщение 
-            stream.Read(data, 0, data.Length);//Получаем сообщение 
-            string message = Encoding.UTF8.GetString(data, 0, count);
-            if (message == "ok0")
+            try
             {
-                return true;
+                client = new TcpClient();
+                client.ReceiveTimeout = 1000;
+                client.Connect(server, port);
+                NetworkStream stream = client.GetStream();
+                byte[] data = Encoding.UTF8.GetBytes(Id);
+                stream.Write(data, 0, data.Length);//Отправляем сообщение 
+                stream.Read(data, 0, data.Length);//Получаем сообщение 
+                string message = Encoding.UTF8.GetString(data, 0, count);
+                if (message == "ok0")
+                {
+                    return true;
+                }
+                else
+                {
+                    client.Close();
+                    stream.Close();
+                    return false;
+                }
             }
-            else
+            catch(Exception e)
             {
-                client.Close();
-                stream.Close();
-                return false;
+                throw new Exception();
             }
-
         }
 
         //Устанавливает полезное сообщение
@@ -99,15 +106,33 @@ namespace Field_project
 
             return message;
         }
-
         public string GetMessage()
         {
             NetworkStream stream = client.GetStream();
 
-            byte[] data = new byte[1];
+            byte[] data = Encoding.UTF8.GetBytes(" ");
 
             int bytes = stream.Read(data, 0, data.Length); // получаем количество считанных байтов
-            string message = Encoding.UTF8.GetString(data, 0, count);
+            string message = Encoding.UTF8.GetString(data, 0, 1);
+
+            return message;
+        }
+        public string GetMessageGtd()
+        {
+            NetworkStream stream = client.GetStream();
+
+            byte[] data = Encoding.UTF8.GetBytes("gtd");
+            stream.Write(data, 0, data.Length);
+
+            byte[] dataLen = new byte[2];
+            int bytes = stream.Read(dataLen, 0, dataLen.Length); // получаем количество считанных байтов
+            string messageQw = Encoding.UTF8.GetString(dataLen, 0, dataLen.Length);
+
+            int size = Int32.Parse(messageQw);             
+            byte[] dataRes = new byte[size];
+
+            bytes = stream.Read(dataRes, 0, dataRes.Length); // получаем количество считанных байтов
+            string message = Encoding.UTF8.GetString(dataRes, 0, dataRes.Length);
 
             return message;
         }

@@ -175,7 +175,7 @@ namespace Field_project
                 case type_field.enemy_field: //Если тип поля "поле врага"
                     try
                     {
-                        if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда ткнул");
+                        if (unit.Get_Unit_Type() != unit_type.sea) throw new Exception("Не туда нажали");
                     }
                     catch(Exception)
                     {
@@ -206,80 +206,61 @@ namespace Field_project
 
                         if (CheckIdFlag) 
                         {
-                            if (CheckIdFlag && online_client.IsMyStep()) // Если наш ход
+                            try
                             {
-                                message = online_client.GetUsefulMessage("gtd");
-                                Utilits.ProcessingOnlineMessage(message);
-                                online_client.SetUsefulMessage(unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + " ", "stm");
-                                if (online_client.GetMessage() == "+")
+                                if (CheckIdFlag && online_client.IsMyStep()) // Если наш ход
                                 {
-                                    CheckIdFlag = false;
-                                    unit.Set_Unit_Type(unit_type.hit_ship);
-                                    return;
+                                    message = online_client.GetMessageGtd();
+                                    if (Utilits.ProcessingOnlineMessage(message) != "end")
+                                    {
+                                        online_client.SetUsefulMessage(unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + "+", "stm");
+                                        if (online_client.GetMessage() == "+")
+                                        {
+                                            CheckIdFlag = false;
+                                            unit.Set_Unit_Type(unit_type.hit_ship);
+                                        }
+                                        else
+                                        {
+                                            CheckIdFlag = true;
+                                            unit.Set_Unit_Type(unit_type.hit_sea);
+                                            online_client.SetMessage("ok1");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        online_client.SetMessage("end");
+                                        MessageBox.Show("Ты проиграл");
+                                    }
                                 }
-                                else
+                                else //добавить окошечко
                                 {
-                                    CheckIdFlag = true;
-                                    unit.Set_Unit_Type(unit_type.hit_sea);
-                                    online_client.SetMessage("ok1");
-                                    return;
+                                    MessageBox.Show("Не твой ход");
                                 }
                             }
-                            else //добавить окошечко
+                            catch
                             {
-                                MessageBox.Show("Соси хуй, луст пидор");
+                                MessageBox.Show("Не твой ход");
                             }
                         }
                         else
                         {
-                            online_client.SetUsefulMessage(unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + " ", "stm");
+                            online_client.SetUsefulMessage(unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + "+", "stm");
                             if (online_client.GetMessage() == "+")
                             {
                                 CheckIdFlag = false;
                                 unit.Set_Unit_Type(unit_type.hit_ship);
-                                return;
                             }
                             else
                             {
                                 CheckIdFlag = true;
                                 unit.Set_Unit_Type(unit_type.hit_sea);
                                 online_client.SetMessage("ok1");
-                                return;
                             }
                         }
-
-                        /*do
-                        {
-                            if (online_client.IsMyStep()) // Если наш ход
-                            {
-                                message = online_client.GetUsefulMessage(); // Получаем сообщение об атаке
-                                message = Utilits.ProcessingMessage(message, unit); // Обрабатываем сообщение от ИИ
-
-                                if (message != "+" || message != "*") // Eсли по нашим кораблям не попали
-                                {
-                                    message = unit.Get_Position_I().ToString() + unit.Get_Position_J().ToString() + message; //составляем сообщение об атаке
-                                    online_client.SetUsefulMessage(message); // Передаем сообщение об атаке
-                                    online_client.EndSession(); // Закрываем сессию.
-                                    break;
-                                }
-                                else
-                                {
-                                    online_client.SetUsefulMessage("+++"); // Передаем сообщение об атаке
-                                    online_client.EndSession(); // Закрываем сессию.
-                                }
-                            }
-                            else
-                            {
-                                break;
-                            }
-                            System.Threading.Thread.Sleep(10000);
-                        } while (true);*/
-                        
                     }
                     break;
 
                 case type_field.user_field: //Если тип поля "поле игрока"
-                    
                     break;
             }
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка

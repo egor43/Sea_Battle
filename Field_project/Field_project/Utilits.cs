@@ -420,13 +420,13 @@ namespace Field_project
         }
 
         //Парсинг строки приходящих ударов от противника
-        public static void ProcessingOnlineMessage(string message)
+        public static string ProcessingOnlineMessage(string message)
         {
             string ret = " ";
 
             if (message == "non")
             {
-                return;
+                return ret;
             }
             else
             {
@@ -438,6 +438,8 @@ namespace Field_project
                     ret = UnitEvent(x, y); // Запили проверку на Null
                 }
             }
+
+            return ret;
         }
 
         // Достигли ли мы конца игры
