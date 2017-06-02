@@ -6,10 +6,13 @@
         xmlns:local="clr-namespace:WpfApplication2"
         xmlns:Field_project="clr-namespace:Field_project;assembly=Field_project" x:Class="WpfApplication2.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="600" Loaded="Window_Loaded">
-    <Grid>
-        <Field_project:UserControl1 Name="game_field" Margin="24,27,242,615"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="480,347,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-        <Field_project:UserControl1 Name="Attack_Field" HorizontalAlignment="Left" Margin="37,497,0,0" VerticalAlignment="Top"/>
+        Title="Sea Battle" Height="800" Width="601.5" Loaded="Window_Loaded">
+    <Grid Margin="0,0,2,0">
+        <Field_project:UserControl1 Name="game_field" Margin="0,51,255,0" VerticalAlignment="Top" Width="300" HorizontalAlignment="Right"/>
+        <Button x:Name="button" Content="Автоматическая расстановка" HorizontalAlignment="Left" Margin="376,51,0,0" VerticalAlignment="Top" Width="185" Click="button_Click" Height="38"/>
+        <Field_project:UserControl1 Name="Attack_Field" HorizontalAlignment="Right" Margin="0,0,255,63" VerticalAlignment="Bottom" Height="300"/>
+        <Label x:Name="lbl_game" Content="Ваш флот" HorizontalAlignment="Left" Margin="26,25,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbl_attack" Content="Карта ударов" HorizontalAlignment="Left" Margin="25,0,0,363" VerticalAlignment="Bottom"/>
+        <Button x:Name="btn_clear" Content="Очистить" HorizontalAlignment="Left" Margin="376,112,0,0" VerticalAlignment="Top" Width="185" Height="35" Click="button1_Click"/>
     </Grid>
 </Window>

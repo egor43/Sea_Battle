@@ -23,6 +23,9 @@ namespace Field_project
     {
         //Переменные класса пользовательского элемента Field ("игровое поле")
 
+        public delegate void CheckUnit();
+        public event CheckUnit FieldFilled; // Событие заполнения поля
+
         private Unit[,] matrix_state = new Unit [10,10]; //Матрица состояния игрового поля
         private type_field field_type = type_field.set_field; //Тип игрового поля
         private game_mode mode_game = game_mode.offline_game; //Режим игры
@@ -132,9 +135,16 @@ namespace Field_project
             this.mode_game = mode;
         }
 
+        // Запуск события заполненного поля
+        private void StartFieldEvent()
+        {
+            FieldFilled.Invoke();
+        }
+
         // Обрабатывает нажатия на ячейку в зависимости от режима поля (режимы: установка кораблей, поле врага, поле игрока)
         private void MyCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            this.IsEnabled = false; // Блокируем поле
             Unit unit = (Unit)((Canvas)sender).Tag; //Вытаскиваем ячейку из вызвавшего элемента
             switch (field_type)
             {
@@ -165,6 +175,7 @@ namespace Field_project
                         Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); //Перерисовываем поле
                         SetFieldType(type_field.user_field); // Меняем тип поля
                         grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
+                        StartFieldEvent();
                         if (this.mode_game == game_mode.online_game)
                         {
                             online_client = new ConnectManager(Utilits.ParseMatric(matrix_state)); // Создаем подключение
@@ -264,6 +275,7 @@ namespace Field_project
                     break;
             }
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка
+            this.IsEnabled = true; // Разблокировали поле
         }       
 
         // Авто-заполнение поля
@@ -274,6 +286,7 @@ namespace Field_project
             SetFieldType(type_field.user_field);
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка новой, заполненной матрицы
             grid.IsEnabled = false; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
+            StartFieldEvent();
             if (this.mode_game == game_mode.online_game)
             {
                 online_client = new ConnectManager(Utilits.ParseMatric(matrix_state)); // Создаем подключение
@@ -304,6 +317,18 @@ namespace Field_project
             }
             Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp, matrix_state); // Отрисовка
             return result;
+        }
+
+        public void Clear()
+        {
+            Initinitialization_Grid(Unit.Get_Size_Unit()); //Проводим ""расчерчивание поля
+            Initinitialization_Field(Unit.Get_Size_Unit(), MyCanvas_MouseLeftButtonUp); //Проводим инициализацию поля
+            if (mode_game == game_mode.offline_game) //Если офлайн режим
+            {
+                comp_ii = new Computer();
+            }
+            field_type = type_field.set_field;
+            grid.IsEnabled = true; // Блокируем поле, т.к. все уже выставлено и оно больше не будет изменяться игроком
         }
     }
 }
