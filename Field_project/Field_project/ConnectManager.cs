@@ -10,7 +10,7 @@ namespace Field_project
     public class ConnectManager
     {
         private const short port = 3000;
-        private const string server = "192.168.43.251";
+        private const string server = "192.168.43.251"; 
         private const short count = 3;
         TcpClient client = new TcpClient();
         private string Id = "id0";
